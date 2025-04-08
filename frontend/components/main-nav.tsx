@@ -62,8 +62,8 @@ export function MainNav() {
   ]
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background">
-      <div className="container flex h-16 items-center">
+    <header className="sticky top-0 z-50 w-full border-b bg-background flex  items-center justify-center">
+      <div className="container flex h-16 items-center justify-between ">
         <Link href="/" className="flex items-center space-x-2">
           <Dumbbell className="h-6 w-6 text-blue-600" />
           <span className="font-bold text-xl">FitTrack Pro</span>
@@ -75,7 +75,7 @@ export function MainNav() {
               href={route.href}
               className={cn(
                 "text-sm font-medium transition-colors hover:text-primary",
-                route.active ? "text-blue-600" : "text-muted-foreground",
+                route.active ? "text-blue-600" : "text-muted-foreground"
               )}
             >
               {route.label}
@@ -94,11 +94,19 @@ export function MainNav() {
           </SheetTrigger>
           <SheetContent side="right">
             <div className="flex items-center justify-between">
-              <Link href="/" className="flex items-center space-x-2" onClick={() => setOpen(false)}>
+              <Link
+                href="/"
+                className="flex items-center space-x-2"
+                onClick={() => setOpen(false)}
+              >
                 <Dumbbell className="h-6 w-6 text-blue-600" />
                 <span className="font-bold">FitTrack Pro</span>
               </Link>
-              <Button variant="outline" size="icon" onClick={() => setOpen(false)}>
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={() => setOpen(false)}
+              >
                 <X className="h-5 w-5" />
                 <span className="sr-only">Close navigation menu</span>
               </Button>
@@ -110,7 +118,7 @@ export function MainNav() {
                   href={route.href}
                   className={cn(
                     "text-sm font-medium transition-colors hover:text-primary",
-                    route.active ? "text-blue-600" : "text-muted-foreground",
+                    route.active ? "text-blue-600" : "text-muted-foreground"
                   )}
                   onClick={() => setOpen(false)}
                 >
@@ -127,6 +135,6 @@ export function MainNav() {
         </Sheet>
       </div>
     </header>
-  )
+  );
 }
 

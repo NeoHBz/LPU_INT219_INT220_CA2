@@ -6,27 +6,37 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 
 export default function Home() {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen items-center justify-between">
       {/* Hero Section */}
       <section className="w-full py-12 md:py-24 lg:py-32 bg-gradient-to-r from-blue-600 to-indigo-700">
-        <div className="container px-4 md:px-6">
+        <div className="container px-4 md:px-6 mx-auto">
           <div className="flex flex-col items-center space-y-4 text-center text-white">
             <div className="space-y-2">
               <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl">
                 FitTrack Pro Management System
               </h1>
               <p className="mx-auto max-w-[700px] text-gray-200 md:text-xl">
-                Streamline your fitness center operations with our comprehensive management solution.
+                Streamline your fitness center operations with our comprehensive
+                management solution.
               </p>
             </div>
             <div className="space-x-4">
-              <Button asChild size="lg" className="bg-white text-blue-600 hover:bg-gray-100">
+              <Button
+                asChild
+                size="lg"
+                className="bg-white text-blue-600 hover:bg-gray-100"
+              >
                 <Link href="/dashboard">
                   Get Started
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="border-white text-white hover:bg-white/10">
+              <Button
+                asChild
+                variant="outline"
+                size="lg"
+                className="border-white text-white bg-transparent hover:bg-white hover:text-blue-600"
+              >
                 <Link href="/classes">View Classes</Link>
               </Button>
             </div>
@@ -35,11 +45,13 @@ export default function Home() {
       </section>
 
       {/* Features Section */}
-      <section className="w-full py-12 md:py-24 lg:py-32">
-        <div className="container px-4 md:px-6">
+      <section className="w-full py-12 md:py-24 lg:py-32 flex justify-center">
+        <div className="container px-4 md:px-6 ">
           <div className="flex flex-col items-center justify-center space-y-4 text-center">
             <div className="space-y-2">
-              <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Features</h2>
+              <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
+                Features
+              </h2>
               <p className="max-w-[900px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                 Everything you need to manage your fitness center efficiently
               </p>
@@ -54,7 +66,10 @@ export default function Home() {
                 </div>
               </CardHeader>
               <CardContent>
-                <CardDescription>Track member profiles, attendance, and membership renewals with ease.</CardDescription>
+                <CardDescription>
+                  Track member profiles, attendance, and membership renewals
+                  with ease.
+                </CardDescription>
               </CardContent>
               <CardFooter>
                 <Button asChild variant="ghost" className="w-full">
@@ -71,7 +86,8 @@ export default function Home() {
               </CardHeader>
               <CardContent>
                 <CardDescription>
-                  Create and manage class schedules, bookings, and instructor assignments.
+                  Create and manage class schedules, bookings, and instructor
+                  assignments.
                 </CardDescription>
               </CardContent>
               <CardFooter>
@@ -89,7 +105,8 @@ export default function Home() {
               </CardHeader>
               <CardContent>
                 <CardDescription>
-                  Assign trainers to members, track sessions, and manage trainer schedules.
+                  Assign trainers to members, track sessions, and manage trainer
+                  schedules.
                 </CardDescription>
               </CardContent>
               <CardFooter>
@@ -107,7 +124,8 @@ export default function Home() {
               </CardHeader>
               <CardContent>
                 <CardDescription>
-                  Monitor equipment maintenance, usage, and schedule repairs when needed.
+                  Monitor equipment maintenance, usage, and schedule repairs
+                  when needed.
                 </CardDescription>
               </CardContent>
               <CardFooter>
@@ -125,7 +143,8 @@ export default function Home() {
               </CardHeader>
               <CardContent>
                 <CardDescription>
-                  Track member check-ins, class attendance, and generate detailed reports.
+                  Track member check-ins, class attendance, and generate
+                  detailed reports.
                 </CardDescription>
               </CardContent>
               <CardFooter>
@@ -142,7 +161,10 @@ export default function Home() {
                 </div>
               </CardHeader>
               <CardContent>
-                <CardDescription>Create and manage membership plans, handle renewals and payments.</CardDescription>
+                <CardDescription>
+                  Create and manage membership plans, handle renewals and
+                  payments.
+                </CardDescription>
               </CardContent>
               <CardFooter>
                 <Button asChild variant="ghost" className="w-full">
@@ -155,7 +177,7 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="w-full py-12 md:py-24 lg:py-32 bg-gray-100">
+      <section className="w-full py-12 md:py-24 lg:py-32 bg-gray-100 flex justify-center">
         <div className="container px-4 md:px-6">
           <div className="flex flex-col items-center justify-center space-y-4 text-center">
             <div className="space-y-2">
@@ -176,7 +198,7 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="w-full py-6 bg-gray-900 text-white">
+      <footer className="w-full py-6 bg-gray-900 text-white flex justify-center">
         <div className="container px-4 md:px-6">
           <div className="grid grid-cols-2 gap-10 md:grid-cols-4">
             <div className="space-y-3">
@@ -261,11 +283,13 @@ export default function Home() {
             </div>
           </div>
           <div className="mt-10 border-t border-gray-700 pt-6 text-center">
-            <p className="text-sm text-gray-400">© 2025 FitTrack Pro. All rights reserved.</p>
+            <p className="text-sm text-gray-400">
+              © 2025 FitTrack Pro. All rights reserved.
+            </p>
           </div>
         </div>
       </footer>
     </div>
-  )
+  );
 }
 
