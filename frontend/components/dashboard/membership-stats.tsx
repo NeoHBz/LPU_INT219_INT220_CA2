@@ -1,15 +1,19 @@
 "use client"
 
+import type { membershipStats } from "@/types/membership-stats"
+import { useEffect, useState } from "react"
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip, Legend } from "recharts"
 
-const data = [
-  { name: "Premium", value: 540, color: "#3b82f6" },
-  { name: "Standard", value: 620, color: "#10b981" },
-  { name: "Basic", value: 210, color: "#f59e0b" },
-  { name: "Day Pass", value: 88, color: "#6366f1" },
-]
-
 export function MembershipStats() {
+    const [data, setData] = useState<membershipStats[]>([])
+    
+    useEffect(() => {
+        fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/membership-stats`).then((res) => res.json()).then((data) => {
+            setData(data)
+
+        })
+    },[])
+    
   return (
     <ResponsiveContainer width="100%" height={350}>
       <PieChart>

@@ -1,64 +1,20 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { recentActivities } from "@/types/recent-activities"
+import { useEffect, useState } from "react"
 
-const activities = [
-  {
-    id: 1,
-    user: {
-      name: "Alex Johnson",
-      image: "/placeholder.svg?height=32&width=32",
-      initials: "AJ",
-    },
-    activity: "Checked in",
-    time: "2 minutes ago",
-    location: "Main Gym",
-  },
-  {
-    id: 2,
-    user: {
-      name: "Sarah Williams",
-      image: "/placeholder.svg?height=32&width=32",
-      initials: "SW",
-    },
-    activity: "Attended Yoga Class",
-    time: "15 minutes ago",
-    location: "Studio 2",
-  },
-  {
-    id: 3,
-    user: {
-      name: "Michael Chen",
-      image: "/placeholder.svg?height=32&width=32",
-      initials: "MC",
-    },
-    activity: "Completed Personal Training",
-    time: "32 minutes ago",
-    location: "Training Area",
-  },
-  {
-    id: 4,
-    user: {
-      name: "Emily Rodriguez",
-      image: "/placeholder.svg?height=32&width=32",
-      initials: "ER",
-    },
-    activity: "Renewed Membership",
-    time: "1 hour ago",
-    location: "Reception",
-  },
-  {
-    id: 5,
-    user: {
-      name: "David Kim",
-      image: "/placeholder.svg?height=32&width=32",
-      initials: "DK",
-    },
-    activity: "Booked Spinning Class",
-    time: "1 hour ago",
-    location: "Mobile App",
-  },
-]
+
 
 export function RecentActivities() {
+    const [activities, setActivities] = useState<recentActivities[]>([])
+    useEffect(() => {
+        fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/recent-activities`, {
+            method: "GET"
+        }).then((res) => res.json()).then((data) => {
+            setActivities(data)
+        }
+      )
+    }, [])
+    
   return (
     <div className="space-y-8">
       {activities.map((activity) => (

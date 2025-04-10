@@ -1,3 +1,4 @@
+"use client"
 import Link from "next/link"
 import { BarChart3, Calendar, CreditCard, Dumbbell, Users, UserPlus, Clock, TrendingUp } from "lucide-react"
 
@@ -7,8 +8,48 @@ import { RecentActivities } from "@/components/dashboard/recent-activities"
 import { UpcomingClasses } from "@/components/dashboard/upcoming-classes"
 import { MembershipStats } from "@/components/dashboard/membership-stats"
 import { AttendanceChart } from "@/components/dashboard/attendance-chart"
+import { useEffect, useState } from "react"
+import { Dashboard } from "@/types/Dashboard"
 
 export default function DashboardPage() {
+    const [totalMembers, setTotalMembers] = useState(0)
+    const [activeClasses, setActiveClasses] = useState(0)
+    const [revenue, setRevenue] = useState(0)
+    const [activeTrainers, setActiveTrainers] = useState(0)
+    const [newTrainers, setNewTrainers] = useState(0);
+  
+    const fetchData = async () => {
+        try {
+            const [res1] = await Promise.all([
+                fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/dashboard`),
+            ]);
+            const [data1] = await Promise.all([
+                res1.json() as Promise<Dashboard>,
+            ])
+            
+            setTotalMembers(+data1.totalMembers);
+            setActiveClasses(+data1.activeClasses);
+            setRevenue(+data1.revenue);
+            setActiveTrainers(+data1.activeTrainers);
+            setNewTrainers(+data1.newTrainers);
+        }
+        catch (error) {
+            if (error instanceof Error) {
+                console.error('API calls failed:', error.message);
+                return;
+            }
+        }
+    }
+
+
+    
+      useEffect(() => {
+          fetchData();
+      }, [])
+      
+    
+    
+    // const [totalMembers, activeClasses, revenue, activeTrainers,newTrainers, attendanceOverview] = 
   return (
     <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
       <div className="flex items-center justify-between space-y-2">
@@ -34,22 +75,30 @@ export default function DashboardPage() {
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Total Members</CardTitle>
+                <CardTitle className="text-sm font-medium">
+                  Total Members
+                </CardTitle>
                 <Users className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">1,248</div>
-                <p className="text-xs text-muted-foreground">+12% from last month</p>
+                <div className="text-2xl font-bold">{totalMembers}</div>
+                <p className="text-xs text-muted-foreground">
+                  +12% from last month
+                </p>
               </CardContent>
             </Card>
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Active Classes</CardTitle>
+                <CardTitle className="text-sm font-medium">
+                  Active Classes
+                </CardTitle>
                 <Calendar className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">42</div>
-                <p className="text-xs text-muted-foreground">+3 new classes this week</p>
+                <div className="text-2xl font-bold">{activeClasses}</div>
+                <p className="text-xs text-muted-foreground">
+                  +3 new classes this week
+                </p>
               </CardContent>
             </Card>
             <Card>
@@ -58,18 +107,22 @@ export default function DashboardPage() {
                 <CreditCard className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">$24,563</div>
-                <p className="text-xs text-muted-foreground">+18.2% from last month</p>
+                <div className="text-2xl font-bold">${revenue}</div>
+                <p className="text-xs text-muted-foreground">
+                  +18.2% from last month
+                </p>
               </CardContent>
             </Card>
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Active Trainers</CardTitle>
+                <CardTitle className="text-sm font-medium">
+                  Active Trainers
+                </CardTitle>
                 <Dumbbell className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">16</div>
-                <p className="text-xs text-muted-foreground">+2 new trainers</p>
+                              <div className="text-2xl font-bold">{ activeTrainers}</div>
+                              <p className="text-xs text-muted-foreground">+{ newTrainers} new trainers</p>
               </CardContent>
             </Card>
           </div>
@@ -77,7 +130,9 @@ export default function DashboardPage() {
             <Card className="col-span-4">
               <CardHeader>
                 <CardTitle>Attendance Overview</CardTitle>
-                <CardDescription>Daily attendance for the past 30 days</CardDescription>
+                <CardDescription>
+                  Daily attendance for the past 30 days
+                </CardDescription>
               </CardHeader>
               <CardContent className="pl-2">
                 <AttendanceChart />
@@ -97,7 +152,9 @@ export default function DashboardPage() {
             <Card className="col-span-3">
               <CardHeader>
                 <CardTitle>Recent Activities</CardTitle>
-                <CardDescription>Latest member check-ins and activities</CardDescription>
+                <CardDescription>
+                  Latest member check-ins and activities
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <RecentActivities />
@@ -106,7 +163,9 @@ export default function DashboardPage() {
             <Card className="col-span-4">
               <CardHeader>
                 <CardTitle>Membership Statistics</CardTitle>
-                <CardDescription>Breakdown of current membership types</CardDescription>
+                <CardDescription>
+                  Breakdown of current membership types
+                </CardDescription>
               </CardHeader>
               <CardContent className="pl-2">
                 <MembershipStats />
@@ -118,43 +177,59 @@ export default function DashboardPage() {
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Peak Hours</CardTitle>
+                <CardTitle className="text-sm font-medium">
+                  Peak Hours
+                </CardTitle>
                 <Clock className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">5PM - 8PM</div>
-                <p className="text-xs text-muted-foreground">Average of 85 members</p>
+                <p className="text-xs text-muted-foreground">
+                  Average of 85 members
+                </p>
               </CardContent>
             </Card>
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Member Retention</CardTitle>
+                <CardTitle className="text-sm font-medium">
+                  Member Retention
+                </CardTitle>
                 <TrendingUp className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">87%</div>
-                <p className="text-xs text-muted-foreground">+2% from last quarter</p>
+                <p className="text-xs text-muted-foreground">
+                  +2% from last quarter
+                </p>
               </CardContent>
             </Card>
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Equipment Usage</CardTitle>
+                <CardTitle className="text-sm font-medium">
+                  Equipment Usage
+                </CardTitle>
                 <BarChart3 className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">76%</div>
-                <p className="text-xs text-muted-foreground">Most used: Treadmills</p>
+                <p className="text-xs text-muted-foreground">
+                  Most used: Treadmills
+                </p>
               </CardContent>
             </Card>
           </div>
           <Card className="col-span-4">
             <CardHeader>
               <CardTitle>Analytics Dashboard</CardTitle>
-              <CardDescription>Detailed analytics will be displayed here</CardDescription>
+              <CardDescription>
+                Detailed analytics will be displayed here
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="h-[400px] flex items-center justify-center border rounded-md">
-                <p className="text-muted-foreground">Advanced analytics charts and data will be displayed here</p>
+                <p className="text-muted-foreground">
+                  Advanced analytics charts and data will be displayed here
+                </p>
               </div>
             </CardContent>
           </Card>
@@ -167,7 +242,9 @@ export default function DashboardPage() {
             </CardHeader>
             <CardContent>
               <div className="h-[400px] flex items-center justify-center border rounded-md">
-                <p className="text-muted-foreground">Reports interface will be displayed here</p>
+                <p className="text-muted-foreground">
+                  Reports interface will be displayed here
+                </p>
               </div>
             </CardContent>
           </Card>
@@ -180,13 +257,15 @@ export default function DashboardPage() {
             </CardHeader>
             <CardContent>
               <div className="h-[400px] flex items-center justify-center border rounded-md">
-                <p className="text-muted-foreground">Notifications will be displayed here</p>
+                <p className="text-muted-foreground">
+                  Notifications will be displayed here
+                </p>
               </div>
             </CardContent>
           </Card>
         </TabsContent>
       </Tabs>
     </div>
-  )
+  );
 }
 
