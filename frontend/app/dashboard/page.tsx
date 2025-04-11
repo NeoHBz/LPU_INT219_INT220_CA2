@@ -65,12 +65,13 @@ export default function DashboardPage() {
         </div>
       </div>
       <Tabs defaultValue="overview" className="space-y-4">
-        <TabsList>
+        {/* <TabsList>
           <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="analytics">Analytics</TabsTrigger>
-          <TabsTrigger value="reports">Reports</TabsTrigger>
-          <TabsTrigger value="notifications">Notifications</TabsTrigger>
-        </TabsList>
+          <TabsTrigger value="analytics">Analytics</TabsTrigger> 
+           <TabsTrigger value="reports">Reports</TabsTrigger>
+          <TabsTrigger value="notifications">Notifications</TabsTrigger> 
+          </TabsList> 
+        */}
         <TabsContent value="overview" className="space-y-4">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             <Card>
@@ -173,7 +174,7 @@ export default function DashboardPage() {
             </Card>
           </div>
         </TabsContent>
-        <TabsContent value="analytics" className="space-y-4">
+        {/* <TabsContent value="analytics" className="space-y-4">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -233,8 +234,8 @@ export default function DashboardPage() {
               </div>
             </CardContent>
           </Card>
-        </TabsContent>
-        <TabsContent value="reports" className="space-y-4">
+        </TabsContent> */}
+        {/* <TabsContent value="reports" className="space-y-4">
           <Card className="col-span-4">
             <CardHeader>
               <CardTitle>Reports</CardTitle>
@@ -248,8 +249,8 @@ export default function DashboardPage() {
               </div>
             </CardContent>
           </Card>
-        </TabsContent>
-        <TabsContent value="notifications" className="space-y-4">
+        </TabsContent> */}
+        {/* <TabsContent value="notifications" className="space-y-4">
           <Card className="col-span-4">
             <CardHeader>
               <CardTitle>Notifications</CardTitle>
@@ -263,7 +264,7 @@ export default function DashboardPage() {
               </div>
             </CardContent>
           </Card>
-        </TabsContent>
+        </TabsContent> */}
       </Tabs>
     </div>
   );

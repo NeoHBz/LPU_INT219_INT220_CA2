@@ -278,9 +278,9 @@ export function MembershipTable() {
                 <Badge
                   variant={
                     membership.paymentStatus === "Paid"
-                      ? "success"
+                      ? "default"
                       : membership.paymentStatus === "Pending"
-                        ? "warning"
+                        ? "outline"
                         : membership.paymentStatus === "Overdue"
                           ? "destructive"
                           : "outline"

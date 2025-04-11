@@ -8,58 +8,31 @@ import { Dumbbell, Menu, X } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { useSelector } from "react-redux"
+import { selectIsUserAdmin } from "@/lib/userSlice"
 
 export function MainNav() {
-  const [open, setOpen] = React.useState(false)
-  const pathname = usePathname()
+    const [open, setOpen] = React.useState(false)
+    const isAdmin = useSelector(selectIsUserAdmin);
+    const pathname = usePathname()
 
-  const routes = [
-    {
-      href: "/",
-      label: "Home",
-      active: pathname === "/",
-    },
-    {
-      href: "/dashboard",
-      label: "Dashboard",
-      active: pathname === "/dashboard",
-    },
-    {
-      href: "/profile",
-      label: "Profile",
-      active: pathname === "/profile",
-    },
-    {
-      href: "/members",
-      label: "Members",
-      active: pathname === "/members",
-    },
-    {
-      href: "/classes",
-      label: "Classes",
-      active: pathname === "/classes",
-    },
-    {
-      href: "/trainers",
-      label: "Trainers",
-      active: pathname === "/trainers",
-    },
-    {
-      href: "/equipment",
-      label: "Equipment",
-      active: pathname === "/equipment",
-    },
-    {
-      href: "/attendance",
-      label: "Attendance",
-      active: pathname === "/attendance",
-    },
-    {
-      href: "/memberships",
-      label: "Memberships",
-      active: pathname === "/memberships",
-    },
-  ]
+    const allRoutes = [
+        { href: "/", label: "Home" },
+        { href: "/dashboard", label: "Dashboard" ,onlyLogin:true},
+        { href: "/profile", label: "Profile", onlyLogin:true },
+        { href: "/members", label: "Members", adminOnly: true },
+        { href: "/classes", label: "Classes", adminOnly: true },
+        { href: "/trainers", label: "Trainers", adminOnly: true },
+        { href: "/equipment", label: "Equipment", adminOnly: true },
+        { href: "/attendance", label: "Attendance", adminOnly: true },
+        { href: "/memberships", label: "Memberships", adminOnly: true },
+    ];
+    const routes = allRoutes
+        .filter(route => isAdmin || !route.adminOnly &&  !route.onlyLogin)
+        .map(route => ({
+            ...route,
+            active: pathname === route.href,
+        }));
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background flex  items-center justify-center">
@@ -79,6 +52,7 @@ export function MainNav() {
               )}
             >
               {route.label}
+              
             </Link>
           ))}
           <Button asChild>

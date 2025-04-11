@@ -6,7 +6,7 @@ import fitnessCenterReducer from "./userSlice";
 export const Store = configureStore({
     reducer: {
         [userApi.reducerPath]: userApi.reducer,
-        fitnessCenter: fitnessCenterReducer,
+        userInformation: fitnessCenterReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().concat([userApi.middleware]),
