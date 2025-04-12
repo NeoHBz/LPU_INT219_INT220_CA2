@@ -14,6 +14,7 @@ Features include:
 Frontend: Vite App
 └── Pages
     ├── Home (Landing page with gym info, featured classes)
+    ├── Login/Signup (Member authentication)
     ├── Profile (Member dashboard, personal info)
     ├── Members (Admin member management)
     ├── Classes (Schedule viewer and booking)
@@ -52,6 +53,7 @@ Backend: Vanilla PHP
 Frontend: Vite App
   Pages
     Home (Landing page with gym info, featured classes)
+    Login/Signup (Member authentication)
     Profile (Member dashboard, personal info)
     Members (Admin member management)
     Classes (Schedule viewer and booking)
