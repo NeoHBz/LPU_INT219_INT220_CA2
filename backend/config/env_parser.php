@@ -28,14 +28,16 @@ class EnvParser {
         }
         
         while (($line = fgets($envFile)) !== false) {
-            // Ignore comments and empty lines
-            if (trim($line) === "" || strpos(trim($line), "#") === 0) {
+            // Skip comments and empty lines
+            if (trim($line) === "" || strpos(trim($line), "#") === 0 || strpos(trim($line), "//") === 0) {
                 continue;
             }
             
             // Split the line into key and value
             list($key, $value) = explode("=", trim($line), 2);
-            $env[trim($key)] = trim($value);
+            // Strip quotes from value
+            $value = trim($value, '"\'');
+            $env[trim($key)] = $value;
         }
         
         fclose($envFile);

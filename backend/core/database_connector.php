@@ -32,15 +32,28 @@ class Database_Connector {
     public function connect(): ?PDO {
         if ($this->conn === null) {
             try {
-                $this->conn = new PDO(
-                    "mysql:host={$this->host};dbname={$this->db_name}",
-                    $this->username,
-                    $this->password
-                );
+                // Log connection attempts for debugging
+                error_log("Attempting to connect to MySQL: {$this->host}, {$this->db_name}, {$this->username}");
+                
+                // Try various connection methods
+                $dsn = "mysql:host={$this->host};dbname={$this->db_name}";
+                $this->conn = new PDO($dsn, $this->username, $this->password);
                 $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             } catch (PDOException $e) {
                 error_log("Connection Error: " . $e->getMessage());
-                return null;
+                
+                // Try socket connection as fallback
+                try {
+                    $this->conn = new PDO(
+                        "mysql:unix_socket=/tmp/mysql.sock;dbname={$this->db_name}",
+                        $this->username,
+                        $this->password
+                    );
+                    $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                } catch (PDOException $e2) {
+                    error_log("Socket Connection Error: " . $e2->getMessage());
+                    return null;
+                }
             }
         }
         return $this->conn;

@@ -1,31 +1,23 @@
 <?php
-require_once __DIR__ . '/../models/User.php';
+require_once __DIR__ . '/../controllers/UserController.php';
 
-$userModel = new User();
+// Initialize controller
+$userController = new UserController();
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_GET['route'] === 'register') {
-    $data = json_decode(file_get_contents('php://input'), true);
-    $username = $data['username'] ?? '';
-    $password = $data['password'] ?? '';
-    $email = $data['email'] ?? '';
+// Route handling
+$route = $_GET['route'] ?? '';
+$method = $_SERVER['REQUEST_METHOD'];
 
-    if ($username && $password && $email) {
-        $hashed_password = password_hash($password, PASSWORD_BCRYPT);
-        $result = $userModel->create([
-            'username' => $username,
-            'password' => $hashed_password,
-            'email' => $email,
-        ]);
-
-        if ($result) {
-            echo json_encode(['message' => 'User registered successfully']);
+// Map routes to controller methods
+switch ($route) {
+    case 'register':
+        if ($method === 'POST') {
+            $userController->register();
         } else {
-            echo json_encode(['error' => 'Failed to register user']);
+            ResponseUtil::sendMethodNotAllowed(allowedMethods: ['POST']);
         }
-    } else {
-        echo json_encode(['error' => 'Invalid input']);
-    }
-} else {
-    http_response_code(404);
-    echo json_encode(['error' => 'Route not found']);
+        break;
+    // Add more routes as needed
+    default:
+        ResponseUtil::sendNotFound('Route not found');
 }
