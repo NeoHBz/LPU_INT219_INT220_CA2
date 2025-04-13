@@ -1,30 +1,31 @@
 <?php
 
 /**
- * Simple PSR-4 autoloader for the project
+ * Simple autoloader for college project
  */
 spl_autoload_register(function ($class) {
-    // Project-specific namespace prefix
-    $prefix = 'App\\';
+    // Convert namespace to file path
+    $class = str_replace('App\\', '', $class);
+    $class = str_replace('\\', '/', $class);
     
-    // Base directory for the namespace prefix
-    $base_dir = __DIR__ . '/';
+    // List of common directories to check
+    $directories = [
+        __DIR__ . '/',
+        __DIR__ . '/controllers/',
+        __DIR__ . '/models/',
+        __DIR__ . '/middleware/',
+        __DIR__ . '/auth/',
+        __DIR__ . '/config/',
+        __DIR__ . '/database/',
+        __DIR__ . '/routes/'
+    ];
     
-    // Does the class use the namespace prefix?
-    $len = strlen($prefix);
-    if (strncmp($prefix, $class, $len) !== 0) {
-        // No, move to the next registered autoloader
-        return;
-    }
-    
-    // Get the relative class name
-    $relative_class = substr($class, $len);
-    
-    // Convert namespace to directory structure
-    $file = $base_dir . str_replace('\\', '/', $relative_class) . '.php';
-    
-    // If the file exists, require it
-    if (file_exists($file)) {
-        require $file;
+    // Check each directory for the file
+    foreach ($directories as $directory) {
+        $file = $directory . $class . '.php';
+        if (file_exists($file)) {
+            require_once $file;
+            return;
+        }
     }
 });

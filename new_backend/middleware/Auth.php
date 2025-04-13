@@ -28,10 +28,7 @@ class Auth {
         
         try {
             $payload = JWT::decode($token);
-            
-            // Add user info to request for controllers to use
             $_REQUEST['user'] = $payload;
-            
             return null; // Proceed to controller
         } catch (\Exception $e) {
             header('HTTP/1.0 401 Unauthorized');

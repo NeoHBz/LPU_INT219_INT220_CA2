@@ -9,4 +9,12 @@ class HomeController {
             'message' => 'Fitness API is running'
         ];
     }
+    
+    public function status() {
+        return [
+            'status' => 'success',
+            'message' => 'Server is running',
+            'timestamp' => date('Y-m-d H:i:s')
+        ];
+    }
 }

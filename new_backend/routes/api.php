@@ -1,18 +1,22 @@
 <?php
 
-use App\Controllers\HomeController;
-use App\Controllers\UserController;
 use App\Routing\Router;
+use App\Controllers\HomeController;
+use App\Controllers\AuthController;
+use App\Controllers\UserController;
 
 $router = new Router();
 
-// User routes
-$router->post('/user/register', [new UserController(), 'register']);
-$router->post('/user/login', [new UserController(), 'login']);
-$router->get('/user/profile', [new UserController(), 'profile'])->middleware('Auth');
-$router->put('/user/update', [new UserController(), 'update'])->middleware('Auth');
+// Public routes
+$router->get('/', [HomeController::class, 'index']);
+$router->get('/status', [HomeController::class, 'status']);
 
-// Home route for server status check
-$router->get('/status', [new HomeController(), 'index']);
+// Auth routes
+$router->post('/login', [AuthController::class, 'login']);
+$router->post('/register', [AuthController::class, 'register']);
+
+// User routes with auth
+$router->get('/user', [UserController::class, 'show'])->middleware('auth');
+$router->put('/user', [UserController::class, 'update'])->middleware('auth');
 
 return $router;
