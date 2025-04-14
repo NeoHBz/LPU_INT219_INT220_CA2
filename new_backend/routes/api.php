@@ -11,11 +11,11 @@ $router->get('/', [HomeController::class, 'index']);
 $router->get('/status', [HomeController::class, 'status']);
 
 // Auth routes (now using UserController)
-$router->post('/login', [UserController::class, 'login']);
-$router->post('/register', [UserController::class, 'register']);
+$router->post('/user/login', [UserController::class, 'login']);
+$router->post('/user/register', [UserController::class, 'register']);
 
-// User routes with auth
-$router->get('/user', [UserController::class, 'show'])->middleware('auth');
-$router->put('/user', [UserController::class, 'update'])->middleware('auth');
+// // User routes with auth
+// $router->get('/user', [UserController::class, 'show'])->middleware('auth');
+// $router->put('/user', [UserController::class, 'update'])->middleware('auth');
 
 return $router;

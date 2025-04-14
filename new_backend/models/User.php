@@ -24,13 +24,13 @@ class User {
     public function findByEmail($email) {
         $sql = "SELECT * FROM users WHERE email = ? LIMIT 1";
         $stmt = $this->db->query($sql, [$email]);
-        return $stmt->fetch();
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
     }
     
     public function findById($id) {
         $sql = "SELECT id, username, email, created_at, updated_at FROM users WHERE id = ? LIMIT 1";
         $stmt = $this->db->query($sql, [$id]);
-        return $stmt->fetch();
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
     }
     
     public function update($id, $data) {
