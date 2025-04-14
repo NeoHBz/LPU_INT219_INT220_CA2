@@ -67,7 +67,7 @@ class UserController {
         $data = json_decode(file_get_contents('php://input'), true);
         
         // Validate required fields
-        if (empty($data['username']) || empty($data['email']) || empty($data['password'])) {
+        if (empty($data['username']) || empty($data['email']) || empty($data['password']) || empty($data['first_name']) || empty($data['last_name'])) {
             return Response::json([
                 'status' => 'error',
                 'message' => 'Missing required fields'

@@ -14,13 +14,12 @@ class User {
     public function create($data) {
         $hashedPassword = password_hash($data['password'], PASSWORD_BCRYPT);
         
-        $sql = "INSERT INTO users (username, email, password, created_at) VALUES (?, ?, ?, NOW())";
-        $params = [$data['username'], $data['email'], $hashedPassword];
+        $sql = "INSERT INTO users (username, email, password, first_name, last_name, created_at) VALUES (?, ?, ?, ?, ?, NOW())";
+        $params = [$data['username'], $data['email'], $hashedPassword, $data['first_name'], $data['last_name']];
         
         $this->db->query($sql, $params);
         return $this->db->lastInsertId();
     }
-    
     public function findByEmail($email) {
         $sql = "SELECT * FROM users WHERE email = ? LIMIT 1";
         $stmt = $this->db->query($sql, [$email]);
@@ -28,7 +27,7 @@ class User {
     }
     
     public function findById($id) {
-        $sql = "SELECT id, username, email, created_at, updated_at FROM users WHERE id = ? LIMIT 1";
+        $sql = "SELECT id, username, email, first_name, last_name, created_at, updated_at FROM users WHERE id = ? LIMIT 1";
         $stmt = $this->db->query($sql, [$id]);
         return $stmt->fetch(\PDO::FETCH_ASSOC);
     }

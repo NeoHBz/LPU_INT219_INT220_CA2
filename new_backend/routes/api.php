@@ -10,12 +10,8 @@ $router = new Router();
 $router->get('/', [HomeController::class, 'index']);
 $router->get('/status', [HomeController::class, 'status']);
 
-// Auth routes (now using UserController)
+// User routes
 $router->post('/user/login', [UserController::class, 'login']);
 $router->post('/user/register', [UserController::class, 'register']);
-
-// // User routes with auth
-// $router->get('/user', [UserController::class, 'show'])->middleware('auth');
-// $router->put('/user', [UserController::class, 'update'])->middleware('auth');
 
 return $router;
