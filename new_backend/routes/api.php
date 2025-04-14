@@ -1,6 +1,6 @@
 <?php
 
-use App\Routing\Router;
+use App\Routes\Router;
 use App\Controllers\HomeController;
 use App\Controllers\AuthController;
 use App\Controllers\UserController;
