@@ -19,7 +19,7 @@ const initialState: StateInterface = {
     userInfo: {
         firstName: "",
         lastName: "",
-        email: "",
+        email: "hello@hello.com",
         isAdmin: false,
         phoneNumber: "",
         profilePicture: "",
@@ -42,9 +42,9 @@ const fitnessCenterData = createSlice({
                 payload: Pick<StateInterface, "userInfo">;
             },
         ) => {
-            state.userInfo  = action.payload.userInfo;
+            state.userInfo = action.payload.userInfo;
         },
-        
+
     },
 });
 
@@ -55,4 +55,8 @@ export const selectUserInformation = (state: any) => state.userInformation.userI
 export const selectIsUserAdmin = createSelector(
     selectUserInformation,
     (userInfo) => userInfo.isAdmin
+)
+export const selectOnlyLogin = createSelector(
+    selectUserInformation,
+    (userInfo) => userInfo.email !== ""
 )
