@@ -19,7 +19,7 @@ const initialState: StateInterface = {
     userInfo: {
         firstName: "",
         lastName: "",
-        email: "hello@hello.com",
+        email: "asdf",
         isAdmin: false,
         phoneNumber: "",
         profilePicture: "",

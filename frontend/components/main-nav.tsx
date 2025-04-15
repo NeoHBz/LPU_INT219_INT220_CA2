@@ -20,25 +20,45 @@ export function MainNav() {
         console.log(isLogin);
         console.log(isAdmin);
     }, [isLogin, isAdmin])
-
     const allRoutes = [
         { href: "/", label: "Home" },
         { href: "/dashboard", label: "Dashboard", adminOnly: true },
-        { href: "/profile", label: "Profile", onlyLogin: true },
+        { href: "/profile", label: "Profile" },
         { href: "/members", label: "Members", adminOnly: true },
-        { href: "/classes", label: "Classes", adminOnly: true },
-        { href: "/trainers", label: "Trainers", adminOnly: true },
+        { href: "/classes", label: "Classes" },
+        { href: "/trainers", label: "Trainers" },
         { href: "/equipment", label: "Equipment", adminOnly: true },
         { href: "/attendance", label: "Attendance", adminOnly: true },
         { href: "/memberships", label: "Memberships", adminOnly: true },
     ];
-    const routes = allRoutes
-        .filter(route => isAdmin || !route.adminOnly)
-        .filter(route => isLogin || !route.onlyLogin)
-        .map(route => ({
-            ...route,
-            active: pathname === route.href,
-        }));
+
+    const routes = isLogin
+        ? allRoutes
+            .filter(route => !route.adminOnly || isAdmin)
+            .map(route => ({
+                ...route,
+                active: pathname === route.href,
+            }))
+        : [];
+
+    // const allRoutes = [
+    //     { href: "/", label: "Home" },
+    //     { href: "/dashboard", label: "Dashboard", adminOnly: true },
+    //     { href: "/profile", label: "Profile", onlyLogin: true },
+    //     { href: "/members", label: "Members", adminOnly: true },
+    //     { href: "/classes", label: "Classes", onlyLogin: true },
+    //     { href: "/trainers", label: "Trainers", onlyLogin: true },
+    //     { href: "/equipment", label: "Equipment", adminOnly: true },
+    //     { href: "/attendance", label: "Attendance", adminOnly: true },
+    //     { href: "/memberships", label: "Memberships", adminOnly: true },
+    // ];
+    // const routes = allRoutes
+    //     .filter(route => isAdmin || !route.adminOnly)
+    //     .filter(route => isLogin || !route.onlyLogin)
+    //     .map(route => ({
+    //         ...route,
+    //         active: pathname === route.href,
+    //     }));
 
     return (
         <header className="sticky top-0 z-50 w-full border-b bg-background flex  items-center justify-center">
