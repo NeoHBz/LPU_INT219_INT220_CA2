@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 import { selectUserInformation } from "@/lib/userSlice";
@@ -26,6 +26,7 @@ export default function RequireAuth({
 }) {
     const router = useRouter();
     const userInfo = useSelector(selectUserInformation);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const routeInfo = allRoutes.find((r) => r.href === page);
@@ -35,11 +36,13 @@ export default function RequireAuth({
         } else if (routeInfo?.adminOnly && !userInfo.isAdmin) {
             router.push("/unauthorized");
         }
+        else {
+            setLoading(false);  // Set loading to false once check is done
+        }
     }, [userInfo, router, page]);
-
-    if (!userInfo?.email) return null;
-    if (allRoutes.find((r) => r.href === page)?.adminOnly && userInfo.role !== "admin")
+    if (loading) {
         return null;
+    }
 
     return <>{children}</>;
 }
