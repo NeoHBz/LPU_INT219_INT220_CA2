@@ -27,5 +27,16 @@ CREATE TABLE IF NOT EXISTS members (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
+-- Create plans table
+CREATE TABLE IF NOT EXISTS plans (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    plan_name VARCHAR(100) NOT NULL,
+    price DECIMAL(10, 2) NOT NULL,
+    duration VARCHAR(50) NOT NULL,
+    membership_type ENUM('basic', 'standard', 'premium', 'professional') NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
 -- Add index on email for faster lookups
-CREATE INDEX idx_users_email ON users(email);
+-- CREATE INDEX idx_users_email ON users(email);

@@ -4,6 +4,7 @@ use App\Routes\Router;
 use App\Controllers\HomeController;
 use App\Controllers\UserController;
 use App\Controllers\MemberController;
+use App\Controllers\PlanController;
 
 $router = new Router();
 
@@ -21,5 +22,9 @@ $router->post('/user/register', [UserController::class, 'register']);
 // Membership Routes
 $router->get('/members', [MemberController::class, 'listAll']);
 $router->post('/members', [MemberController::class, 'create']);
+
+
+// Plans Route
+$router->get('/plans/all', [PlanController::class, 'getAll']);
 
 return $router;
