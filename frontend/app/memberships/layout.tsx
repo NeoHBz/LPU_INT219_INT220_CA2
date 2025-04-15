@@ -6,5 +6,5 @@ export default function DashboardLayout({
 }: {
     children: React.ReactNode;
 }) {
-    return <RequireAuth>{children}</RequireAuth>;
+    return <RequireAuth page="/memberships">{children}</RequireAuth>;
 }
