@@ -9,6 +9,7 @@ $router = new Router();
 // Public routes
 $router->get('/', [HomeController::class, 'index']);
 $router->get('/status', [HomeController::class, 'status']);
+$router->get('/plans', [HomeController::class, 'plans']);
 
 // User routes
 $router->post('/user/login', [UserController::class, 'login']);
