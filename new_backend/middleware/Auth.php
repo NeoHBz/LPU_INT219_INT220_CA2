@@ -29,13 +29,9 @@ class Auth {
         try {
             $payload = JWT::decode($token);
             // Get complete user details from database using the user ID in payload
-            error_log('Decoded JWT payload: ' . json_encode($payload));
-            error_log('IsSet ID: ' . (isset($payload['id']) ? 'true' : 'false'));
-            error_log('User ID: ' . (isset($payload['id']) ? $payload['id'] : 'null'));
             if (isset($payload['id'])) {
                 $userModel = new User();
                 $user = $userModel->findById($payload['id']);
-                error_log('User details: ' . json_encode($user));
                 
                 if (!$user) {
                     throw new \Exception('User not found');
