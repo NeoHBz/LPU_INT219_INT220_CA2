@@ -6,5 +6,5 @@ export default function DashboardLayout({
 }: {
     children: React.ReactNode;
 }) {
-    return <RequireAuth>{children}</RequireAuth>;
+    return <RequireAuth page="/equipment">{children}</RequireAuth>;
 }
