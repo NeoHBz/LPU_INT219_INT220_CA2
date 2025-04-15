@@ -1,5 +1,5 @@
+"use client"
 import { CalendarClock, CreditCard, Dumbbell, History, User } from "lucide-react"
-
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -9,8 +9,16 @@ import { ProfileForm } from "@/components/profile/profile-form"
 import { MembershipDetails } from "@/components/profile/membership-details"
 import { ClassHistory } from "@/components/profile/class-history"
 import { PaymentHistory } from "@/components/profile/payment-history"
+import { useSelector } from "react-redux"
+import { selectUserInformation } from "@/lib/userSlice"
+import { useEffect } from "react"
+import { userInfo } from "os"
 
 export default function ProfilePage() {
+    const userInformation = useSelector(selectUserInformation);
+
+
+
   return (
     <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between space-y-2 md:space-y-0">
@@ -33,11 +41,11 @@ export default function ProfilePage() {
                 <AvatarFallback>JS</AvatarFallback>
               </Avatar>
               <div className="text-center">
-                <h3 className="text-xl font-bold">John Smith</h3>
-                <p className="text-sm text-muted-foreground">Member since January 2023</p>
+                              <h3 className="text-xl font-bold">{userInformation.firstName}  {userInformation.lastName}</h3>
+                              <p className="text-sm text-muted-foreground">Member since January 2023  <strong>change it </strong></p>
                 <div className="mt-2 flex justify-center">
-                  <Badge className="mr-1">Premium Member</Badge>
-                  <Badge variant="outline">ID: M001</Badge>
+                                  <Badge className="mr-1">Premium Member <strong>change it </strong></Badge>
+                                  <Badge variant="outline">ID: {userInformation.id}</Badge>
                 </div>
               </div>
               <div className="w-full space-y-2 pt-4">
@@ -46,28 +54,28 @@ export default function ProfilePage() {
                     <User className="h-4 w-4 text-muted-foreground" />
                     <span className="text-sm font-medium">Email</span>
                   </div>
-                  <span className="text-sm">john.smith@example.com</span>
+                                  <span className="text-sm">{userInformation.email}</span>
                 </div>
                 <div className="flex items-center justify-between border-b pb-2">
                   <div className="flex items-center space-x-2">
                     <User className="h-4 w-4 text-muted-foreground" />
                     <span className="text-sm font-medium">Phone</span>
                   </div>
-                  <span className="text-sm">(555) 123-4567</span>
+                                  <span className="text-sm">{userInformation.phone}</span>
                 </div>
                 <div className="flex items-center justify-between border-b pb-2">
                   <div className="flex items-center space-x-2">
                     <CalendarClock className="h-4 w-4 text-muted-foreground" />
-                    <span className="text-sm font-medium">Membership Expires</span>
+                                      <span className="text-sm font-medium">Membership Expires </span>
                   </div>
-                  <span className="text-sm">January 15, 2024</span>
+                                  <span className="text-sm">January 15, 2024 <strong>change it </strong></span>
                 </div>
                 <div className="flex items-center justify-between pb-2">
                   <div className="flex items-center space-x-2">
                     <Dumbbell className="h-4 w-4 text-muted-foreground" />
                     <span className="text-sm font-medium">Fitness Goals</span>
                   </div>
-                  <span className="text-sm">Weight Loss, Strength</span>
+                                  <span className="text-sm">{userInformation.fitnessGoals}</span>
                 </div>
               </div>
             </div>

@@ -92,3 +92,18 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+/* Loading animation */
+@keyframes loading {
+  0% {
+    width: 0%;
+    transform: translateX(-100%);
+  }
+  50% {
+    width: 100%;
+  }
+  100% {
+    width: 0%;
+    transform: translateX(100%);
+  }
+}
