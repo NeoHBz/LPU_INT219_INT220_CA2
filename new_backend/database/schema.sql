@@ -1,6 +1,6 @@
 -- Create database if not exists
-CREATE DATABASE IF NOT EXISTS fitness_app;
-USE fitness_app;
+CREATE DATABASE IF NOT EXISTS fitness;
+USE fitness;
 
 -- Create users table
 CREATE TABLE IF NOT EXISTS users (

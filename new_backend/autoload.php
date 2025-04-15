@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Simple autoloader for college project
+ * Simple autoloader, autoload classes from the App namespace
  */
 spl_autoload_register(function ($class) {
     // Convert namespace to file path
