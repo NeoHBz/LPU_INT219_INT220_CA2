@@ -21,5 +21,11 @@ class MemberController {
         ]);
     }
 
-    // public function create()
+    public function create(array $data): array {
+        $member = $this->membersModel->create($data);
+        return Response::json([
+            'status' => 'success',
+            'data' => $member
+        ]);
+    }
 }

@@ -20,5 +20,6 @@ $router->post('/user/register', [UserController::class, 'register']);
 
 // Membership Routes
 $router->get('/members', [MemberController::class, 'listAll']);
+$router->post('/members', [MemberController::class, 'create']);
 
 return $router;

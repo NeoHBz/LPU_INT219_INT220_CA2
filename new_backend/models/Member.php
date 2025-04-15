@@ -31,7 +31,14 @@ class Member {
     public function create(array $data): bool {
         $sql = "INSERT INTO members (user_id, plan_id, start_date, end_date, status) 
                 VALUES (:user_id, :plan_id, :start_date, :end_date, :status)";
-        $stmt = $this->db->prepare($sql);
-        return $stmt->execute($data);
+        $stmt = $this->db->query($sql);
+        return $stmt->execute([
+            'user_id' => $data['user_id'],
+            'plan_id' => $data['plan_id'],
+            'start_date' => $data['start_date'],
+            'end_date' => $data['end_date'],
+            'status' => $data['status']
+        ]);
+        
     }
 }
