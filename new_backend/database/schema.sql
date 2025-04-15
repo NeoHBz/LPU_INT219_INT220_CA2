@@ -16,8 +16,8 @@ CREATE TABLE IF NOT EXISTS users (
     updated_at TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP
 );
 
--- Create memberships table
-CREATE TABLE IF NOT EXISTS memberships (
+-- Create members table
+CREATE TABLE IF NOT EXISTS members (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     membership_type ENUM('basic', 'standard', 'premium') DEFAULT 'basic',

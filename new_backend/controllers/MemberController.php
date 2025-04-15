@@ -2,15 +2,15 @@
 
 namespace App\Controllers;
 
-use App\Models\Memberships;
+use App\Models\Member;
 use App\Utils\Response;
 use App\Auth\JWT;
 
-class MembershipsController {
+class MemberController {
     private $membersModel;
     
     public function __construct() {
-        $this->membersModel = new Memberships();
+        $this->membersModel = new Member();
     }
     
     public function listAll(): array {
@@ -20,4 +20,6 @@ class MembershipsController {
             'data' => $members
         ]);
     }
+
+    // public function create()
 }

@@ -3,7 +3,7 @@
 use App\Routes\Router;
 use App\Controllers\HomeController;
 use App\Controllers\UserController;
-use App\Controllers\MembershipsController;
+use App\Controllers\MemberController;
 
 $router = new Router();
 
@@ -18,7 +18,7 @@ $router->get('/user/me', [UserController::class, 'me'])->middleware('auth');
 $router->post('/user/login', [UserController::class, 'login']);
 $router->post('/user/register', [UserController::class, 'register']);
 
-// Memberships Routes
-$router->get('/members', [MembershipsController::class, 'listAll']);
+// Membership Routes
+$router->get('/members', [MemberController::class, 'listAll']);
 
 return $router;
