@@ -20,7 +20,10 @@ class Memberships {
     }
     
     public function findAll(): array {
-        $sql = "SELECT * FROM memberships";
+        $sql = "SELECT m.*, u.id as user_id, u.username, u.first_name, u.last_name, 
+                u.email, u.phone_number, u.address 
+                FROM memberships m
+                JOIN users u ON m.user_id = u.id";
         $stmt = $this->db->query($sql);
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
