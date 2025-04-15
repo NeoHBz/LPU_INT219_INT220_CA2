@@ -10,8 +10,10 @@ class JWT {
     }
     
     public static function decode($token) {
+        if (strpos($token, 'Bearer ') === 0) {
+            $token = substr($token, 7);
+        }
         $payload = json_decode(base64_decode($token), true);
-        
         if (isset($payload['exp']) && $payload['exp'] < time()) {
             throw new \Exception('Token expired');
         }

@@ -13,5 +13,6 @@ $router->get('/status', [HomeController::class, 'status']);
 // User routes
 $router->post('/user/login', [UserController::class, 'login']);
 $router->post('/user/register', [UserController::class, 'register']);
+$router->get('/user/me', [UserController::class, 'me'])->middleware('auth');
 
 return $router;

@@ -112,30 +112,34 @@ class UserController {
         ]);
     }
     
-    public function show() {
-        $headers = getallheaders();
-        $token = isset($headers['Authorization']) ? str_replace('Bearer ', '', $headers['Authorization']) : null;
+    public function me(): array {
+        // Get user ID from request
+        $userId = $_REQUEST['user']['id'] ?? null;
         
-        if (!$token) {
-            return Response::json(['error' => 'Unauthorized'], 401);
+        if (!$userId) {
+            return Response::json([
+                'status' => 'error',
+                'message' => 'User not found'
+            ], 404);
         }
         
-        $decoded = JWT::decode($token);
-        
-        if (!$decoded) {
-            return Response::json(['error' => 'Invalid token'], 401);
-        }
-        
-        $user = $this->userModel->findById($decoded->id);
+        // Find user by ID
+        $user = $this->userModel->findById($userId);
         
         if (!$user) {
-            return Response::json(['error' => 'User not found'], 404);
+            return Response::json([
+                'status' => 'error',
+                'message' => 'User not found'
+            ], 404);
         }
         
-        // Don't return password
+        // Remove password from user data
         unset($user['password']);
         
-        return Response::json($user);
+        return Response::json([
+            'status' => 'success',
+            'data' => $user
+        ]);
     }
     
 }
