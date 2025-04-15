@@ -11,7 +11,7 @@ const allRoutes = [
     { href: "/profile", label: "Profile", onlyLogin: true },
     { href: "/members", label: "Members", adminOnly: true },
     { href: "/classes", label: "Classes", adminOnly: true },
-    { href: "/trainers", label: "Trainers", adminOnly: true },
+    { href: "/trainers", label: "Trainers", onlylogin: true },
     { href: "/equipment", label: "Equipment", adminOnly: true },
     { href: "/attendance", label: "Attendance", adminOnly: true },
     { href: "/memberships", label: "Memberships", adminOnly: true },

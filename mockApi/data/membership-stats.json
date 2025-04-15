@@ -1,0 +1,7 @@
+[
+  { "name": "Premium", "value": 540, "color": "#3b82f6" },
+  { "name": "Standard", "value": 620, "color": "#10b981" },
+  { "name": "Basic", "value": 210, "color": "#f59e0b" },
+  { "name": "Day Pass", "value": 88, "color": "#6366f1" },
+  { "name": "HiddenService", "value": 10, "color": "#161622" }
+]
