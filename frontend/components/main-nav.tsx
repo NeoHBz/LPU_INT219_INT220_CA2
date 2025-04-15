@@ -16,10 +16,6 @@ export function MainNav() {
     const isAdmin = useSelector(selectIsUserAdmin);
     const pathname = usePathname()
     const isLogin = useSelector(selectOnlyLogin);
-    React.useEffect(() => {
-        console.log(isLogin);
-        console.log(isAdmin);
-    }, [isLogin, isAdmin])
     const allRoutes = [
         { href: "/", label: "Home" },
         { href: "/dashboard", label: "Dashboard", adminOnly: true },

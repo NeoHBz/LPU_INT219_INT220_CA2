@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 // import AsyncStorage from "@react-native-async-storage/async-storage";
 // import { getVisitorId } from "../utils/visitorId";
 
-const baseUrl = "";
+const baseUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}`;
 
 export const userApi = createApi({
     reducerPath: "userApi",
@@ -30,7 +30,7 @@ export const userApi = createApi({
         //     } catch (error: any) {}
         // },
     }),
-    tagTypes: ["globalTypes", "refresh"],
+    tagTypes: ["refresh", "userInfo"],
     endpoints: (builder) => ({
         signup: builder.mutation({
             query: (Credentials) => ({
@@ -39,18 +39,21 @@ export const userApi = createApi({
                 body: { ...Credentials },
             }),
         }),
-        fetchSafetyData: builder.query({
+        whoAmi: builder.query({
+            query: () => ({
+                url: "/me",
+                method: "GET",
+            }),
+            providesTags: ["refresh", "userInfo"],
+        }),
+        profile: builder.query({
             query: (location: string) => ({
-                url: `/api/fetchSafetyData/${location}`,
+                url: `/fetchSafetyData/${location}`,
                 method: "GET",
             }),
         }),
-        fetchLandmarks: builder.query({
-            query: (location: string) => ({
-                url: `/api/landMarks/${location}`,
-                method: "GET",
-            }),
-        }),
+
+
 
         // getTransaction: builder.query({
         //     query: (groupId) => ({
@@ -64,6 +67,5 @@ export const userApi = createApi({
 
 export const {
     useSignupMutation,
-    useLazyFetchLandmarksQuery,
-    useLazyFetchSafetyDataQuery,
+    useWhoAmiQuery
 } = userApi;

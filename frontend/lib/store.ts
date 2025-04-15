@@ -16,3 +16,6 @@ export const Store = configureStore({
 });
 setupListeners(Store.dispatch);
 // (getDefaultMiddleware) =>getDefaultMiddleware().concat(userApi.middleware),
+
+export type RootState = ReturnType<typeof Store.getState>;
+export type AppDispatch = typeof Store.dispatch;

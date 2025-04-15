@@ -1,3 +1,4 @@
+import { MainNav } from "@/components/main-nav";
 import RequireAuth from "@/lib/auth/requireAuth";
 
 
@@ -6,5 +7,7 @@ export default function DashboardLayout({
 }: {
     children: React.ReactNode;
 }) {
-    return <RequireAuth>{children}</RequireAuth>;
+    return <RequireAuth page="/attendance">
+        <MainNav />
+        {children}</RequireAuth >;
 }
