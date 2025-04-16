@@ -5,6 +5,7 @@ use App\Controllers\HomeController;
 use App\Controllers\UserController;
 use App\Controllers\MemberController;
 use App\Controllers\PlanController;
+use App\Controllers\TrainerController;
 
 $router = new Router();
 
@@ -22,8 +23,11 @@ $router->post('/user/register', [UserController::class, 'register']);
 $router->get('/members', [MemberController::class, 'listAll']);
 $router->post('/members', [MemberController::class, 'create']);
 
-
 // Plans Route
 $router->get('/plans', [PlanController::class, 'getAll']);
+
+// Trainer Routes
+$router->get('/trainers', [TrainerController::class, 'index']);
+$router->get('/trainers/{id}', [TrainerController::class, 'findById']);
 
 return $router;
