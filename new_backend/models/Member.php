@@ -20,10 +20,24 @@ class Member {
     }
     
     public function findAll(): array {
-        $sql = "SELECT m.*, u.id as user_id, u.username, u.first_name, u.last_name, 
-                u.email, u.phone_number, u.address 
-                FROM members m
-                JOIN users u ON m.user_id = u.id";
+        $sql = "SELECT 
+                    m.id,
+                    m.user_id,
+                    m.plan_id,
+                    m.expiry_date,
+                    m.created_at,
+                    m.updated_at,
+                    JSON_OBJECT(
+                        'username', u.username,
+                        'first_name', u.first_name,
+                        'last_name', u.last_name,
+                        'email', u.email,
+                        'phone_number', u.phone_number,
+                        'address', u.address
+                    ) AS user
+                    FROM members m
+                    JOIN users u ON m.user_id = u.id;
+        ";
         $stmt = $this->db->query($sql);
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }

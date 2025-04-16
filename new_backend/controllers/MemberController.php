@@ -15,6 +15,10 @@ class MemberController {
     
     public function listAll(): array {
         $members = $this->membersModel->findAll();
+        // $members['user'] = json_decode($members['user']);
+        foreach ($members as &$row) {
+            $row['user'] = json_decode($row['user'], true);
+        }
         return Response::json([
             'status' => 'success',
             'data' => $members
