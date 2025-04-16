@@ -25,17 +25,4 @@ class Plan {
         $result = $stmt->fetch(\PDO::FETCH_ASSOC);
         return $result ?: null;
     }
-    
-    public function create(array $data): bool {
-        $sql = "INSERT INTO plans (plan_name, price, duration, membership_type) 
-                VALUES (:plan_name, :price, :duration, :membership_type)";
-        
-        $stmt = $this->db->prepare($sql);
-        $stmt->bindParam(':plan_name', $data['plan_name']);
-        $stmt->bindParam(':price', $data['price']);
-        $stmt->bindParam(':duration', $data['duration']);
-        $stmt->bindParam(':membership_type', $data['membership_type']);
-        
-        return $stmt->execute();
-    }
 }
