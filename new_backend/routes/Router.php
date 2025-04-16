@@ -100,30 +100,72 @@ class Router {
     public function resolve() {
         $method = $_SERVER['REQUEST_METHOD'];
         $path = $_SERVER['PATH_INFO'] ?? '/';
+        $callback = null;
+        $params = [];
+        $matchedRoutePath = null; // Keep track of the matched route path for middleware
 
-        $callback = $this->routes[$method][$path] ?? false;
+        if (isset($this->routes[$method])) {
+            foreach ($this->routes[$method] as $routePath => $routeCallback) {
+                // Convert route path to regex: /trainers/{id} -> #^/trainers/(\w+)$#
+                $pattern = preg_replace('/\{(\w+)\}/', '([^/]+)', $routePath); // Use [^/]+ to match more than just \w
+                $pattern = '#^' . $pattern . '$#';
 
-        if (!$callback) {
-            header("HTTP/1.0 404 Not Found");
-            echo json_encode(['status' => 'error', 'message' => 'Not Found']);
-            exit;
+                if (preg_match($pattern, $path, $matches)) {
+                    // Remove the full match ($matches[0])
+                    array_shift($matches);
+                    $params = $matches; // Extracted parameters (e.g., ['1'])
+                    $callback = $routeCallback;
+                    $matchedRoutePath = $routePath; // Store the original route path
+                    break; // Found a match, stop searching
+                }
+            }
         }
 
-        // Run middlewares for this route
-        $this->runMiddlewares($method, $path);
+
+        if (!$callback) {
+            // Try finding an exact match if no pattern matched (for routes without params)
+            $callback = $this->routes[$method][$path] ?? false;
+             if ($callback) {
+                 $matchedRoutePath = $path; // Store the exact path if matched
+             } else {
+                header("HTTP/1.0 404 Not Found");
+                // Use a standard JSON response utility if available
+                echo json_encode(['status' => 'error', 'message' => 'Not Found']);
+                exit;
+            }
+        }
+
+        // Run middleware associated with the matched route path
+        if ($matchedRoutePath) {
+            $this->runMiddlewares($method, $matchedRoutePath);
+        }
+
+        $response = null; // Variable to hold the response from the controller/callback
 
         if (is_array($callback)) {
             $controller = new $callback[0]();
-            $method = $callback[1];
-            
-            $response = $controller->$method();
+            $controllerMethod = $callback[1];
+            // Call the controller method with extracted parameters
+            $response = call_user_func_array([$controller, $controllerMethod], $params);
+        } elseif (is_callable($callback)) {
+             // Call the closure with extracted parameters
+            $response = call_user_func_array($callback, $params);
+        } else {
+             // Handle cases where callback is not valid (optional, but good practice)
+             header("HTTP/1.0 500 Internal Server Error");
+             echo json_encode(['status' => 'error', 'message' => 'Invalid route configuration']);
+             exit;
+        }
+
+        // --- New Part: Echo the response ---
+        if ($response !== null) {
+            // Assuming the controller returns an array (prepared by Response::json)
+            // If headers are not already sent (Response::json sends them), send default JSON header
+            if (!headers_sent()) {
+                 header('Content-Type: application/json');
+            }
             echo json_encode($response);
-            return;
         }
-        
-        // If $callback is a closure/function
-        if (is_callable($callback)) {
-            echo call_user_func($callback);
-        }
+        // If $response is null, it means the controller handled output itself or there was nothing to output.
     }
 }
