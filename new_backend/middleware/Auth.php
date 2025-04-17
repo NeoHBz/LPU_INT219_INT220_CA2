@@ -6,18 +6,21 @@ use App\Auth\JWT;
 
 class Auth {
     public function handle() {
-        $headers = getallheaders();
-        $token = null;
-        
-        // Check header for token
+         $headers = getallheaders();
+        $authHeader = null;
+
+        // Fallback to $_SERVER if Authorization not present in getallheaders()
         if (isset($headers['Authorization'])) {
             $authHeader = $headers['Authorization'];
-            if (strpos($authHeader, 'Bearer ') === 0) {
-                $token = substr($authHeader, 7);
-            }
+        } elseif (isset($_SERVER['HTTP_AUTHORIZATION'])) {
+            $authHeader = $_SERVER['HTTP_AUTHORIZATION'];
         }
-        
-        // Quick check if token exists
+
+        $token = null;
+        if ($authHeader && strpos($authHeader, 'Bearer ') === 0) {
+            $token = substr($authHeader, 7);
+        }
+
         if (!$token) {
             header('HTTP/1.0 401 Unauthorized');
             return [
