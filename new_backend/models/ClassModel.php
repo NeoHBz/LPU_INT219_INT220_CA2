@@ -20,11 +20,11 @@ class ClassModel {
     
     private function getClasses($filters = [], $singleRecord = false) {
         $sql = "SELECT c.id, c.class_name, c.max_capacity, c.description, ct.name as type, 
-                t.id as instructor_id, u.first_name, u.last_name, t.rating, t.reviews_count,
+                t.id as trainer_id, u.first_name, u.last_name, t.rating, t.reviews_count,
                 (SELECT COUNT(*) FROM class_enrollments ce WHERE ce.class_id = c.id AND ce.status = 'active') as enrolled
                 FROM classes c
                 JOIN class_types ct ON c.class_type_id = ct.id
-                JOIN trainers t ON c.instructor_id = t.id
+                JOIN trainers t ON c.trainer_id = t.id
                 JOIN users u ON t.user_id = u.id
                 WHERE 1=1";
         
@@ -45,9 +45,9 @@ class ClassModel {
             $params[] = $filters['type'];
         }
         
-        if (!empty($filters['instructor_id'])) {
+        if (!empty($filters['trainer_id'])) {
             $sql .= " AND t.id = ?";
-            $params[] = $filters['instructor_id'];
+            $params[] = $filters['trainer_id'];
         }
         
         $stmt = $this->db->query($sql, $params);
@@ -56,13 +56,13 @@ class ClassModel {
         // Process each class
         foreach ($classes as &$class) {
             $class['schedule'] = $this->getSchedule($class['id']);
-            $class['instructor'] = [
-                'id' => $class['instructor_id'],
+            $class['trainer'] = [
+                'id' => $class['trainer_id'],
                 'name' => $class['first_name'] . ' ' . $class['last_name'],
                 'rating' => $class['rating'],
                 'reviews_count' => $class['reviews_count']
             ];
-            unset($class['first_name'], $class['last_name'], $class['instructor_id'], $class['rating'], $class['reviews_count']);
+            unset($class['first_name'], $class['last_name'], $class['trainer_id'], $class['rating'], $class['reviews_count']);
         }
         
         return $classes;

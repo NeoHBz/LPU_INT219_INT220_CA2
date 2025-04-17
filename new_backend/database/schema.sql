@@ -92,13 +92,13 @@ CREATE TABLE
         id INT AUTO_INCREMENT PRIMARY KEY,
         class_name VARCHAR(100) NOT NULL,
         class_type_id INT NOT NULL,
-        instructor_id INT NOT NULL,
+        trainer_id INT NOT NULL,
         max_capacity INT NOT NULL,
         description TEXT,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP,
         FOREIGN KEY (class_type_id) REFERENCES class_types (id) ON DELETE RESTRICT,
-        FOREIGN KEY (instructor_id) REFERENCES trainers (id) ON DELETE RESTRICT
+        FOREIGN KEY (trainer_id) REFERENCES trainers (id) ON DELETE RESTRICT
     );
 
 -- Create class_schedule table

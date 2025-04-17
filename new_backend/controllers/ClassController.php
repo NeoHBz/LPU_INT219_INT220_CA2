@@ -46,8 +46,8 @@ class ClassController {
             $filters['type'] = $_GET['type'];
         }
         
-        if (isset($_GET['instructor_id'])) {
-            $filters['instructor_id'] = $_GET['instructor_id'];
+        if (isset($_GET['trainer_id'])) {
+            $filters['trainer_id'] = $_GET['trainer_id'];
         }
         
         return $filters;

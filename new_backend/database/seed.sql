@@ -78,7 +78,7 @@ INSERT INTO `class_types` (`name`, `description`) VALUES
 ('Body Pump', 'Weight-based group-fitness program using barbells and adjustable weights.');
 
 -- Classes
-INSERT INTO `classes` (`class_name`, `class_type_id`, `instructor_id`, `max_capacity`, `description`) VALUES
+INSERT INTO `classes` (`class_name`, `class_type_id`, `trainer_id`, `max_capacity`, `description`) VALUES
 ('Morning Power Hour', 1, 1, 20, 'Start your day strong with this energizing strength training session.'),
 ('Zen Flow Yoga', 3, 2, 15, 'Find your balance and peace with flowing yoga movements and meditation.'),
 ('Athletic Performance', 1, 3, 12, 'Advanced strength and conditioning for athletes looking to improve performance.'),
