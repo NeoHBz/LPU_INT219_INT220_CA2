@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 import { selectUserInformation } from "@/lib/userSlice";
+import { useLazyWhoAmiQuery } from "@/lib/user";
 
 
 const allRoutes = [
@@ -28,9 +29,15 @@ export default function RequireAuth({
     const router = useRouter();
     const userInfo = useSelector(selectUserInformation);
     const [loading, setLoading] = useState(true);
+    const [whoAmI, { data:userData,isError,isLoading}]  = useLazyWhoAmiQuery();
+    
 
     useEffect(() => {
         const routeInfo = allRoutes.find((r) => r.href === page);
+        if (userInfo.email.length < 2) {
+            console.log("i think someone is smaller than two.")
+            whoAmI("");
+        }
 
         if (!userInfo?.email) {
             router.push("/login");

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import { ArrowUpDown, Calendar, Edit, MoreHorizontal, Trash2, Wrench } from "lucide-react"
 
@@ -16,135 +16,22 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
-
-// Sample data
-const equipment = [
-  {
-    id: "EQ001",
-    name: "Treadmill",
-    model: "LifeFitness T5",
-    serialNumber: "LFT5-12345",
-    location: "Cardio Area",
-    purchaseDate: "Jan 15, 2022",
-    lastMaintenance: "Mar 10, 2023",
-    nextMaintenance: "Sep 10, 2023",
-    status: "Operational",
-    usageHours: 1245,
-  },
-  {
-    id: "EQ002",
-    name: "Elliptical",
-    model: "Precor EFX 885",
-    serialNumber: "PEFX-23456",
-    location: "Cardio Area",
-    purchaseDate: "Feb 20, 2022",
-    lastMaintenance: "Apr 15, 2023",
-    nextMaintenance: "Oct 15, 2023",
-    status: "Operational",
-    usageHours: 980,
-  },
-  {
-    id: "EQ003",
-    name: "Bench Press",
-    model: "Hammer Strength",
-    serialNumber: "HSBC-34567",
-    location: "Weight Area",
-    purchaseDate: "Mar 5, 2022",
-    lastMaintenance: "May 20, 2023",
-    nextMaintenance: "Nov 20, 2023",
-    status: "Under Maintenance",
-    usageHours: 1560,
-  },
-  {
-    id: "EQ004",
-    name: "Leg Press",
-    model: "Cybex Eagle",
-    serialNumber: "CELP-45678",
-    location: "Weight Area",
-    purchaseDate: "Apr 10, 2022",
-    lastMaintenance: "Jun 25, 2023",
-    nextMaintenance: "Dec 25, 2023",
-    status: "Operational",
-    usageHours: 1320,
-  },
-  {
-    id: "EQ005",
-    name: "Rowing Machine",
-    model: "Concept2 Model D",
-    serialNumber: "C2MD-56789",
-    location: "Cardio Area",
-    purchaseDate: "May 15, 2022",
-    lastMaintenance: "Jul 30, 2023",
-    nextMaintenance: "Jan 30, 2024",
-    status: "Out of Order",
-    usageHours: 890,
-  },
-  {
-    id: "EQ006",
-    name: "Stationary Bike",
-    model: "Keiser M3i",
-    serialNumber: "KM3I-67890",
-    location: "Spin Room",
-    purchaseDate: "Jun 20, 2022",
-    lastMaintenance: "Aug 5, 2023",
-    nextMaintenance: "Feb 5, 2024",
-    status: "Operational",
-    usageHours: 1450,
-  },
-  {
-    id: "EQ007",
-    name: "Smith Machine",
-    model: "Matrix Magnum",
-    serialNumber: "MMSM-78901",
-    location: "Weight Area",
-    purchaseDate: "Jul 25, 2022",
-    lastMaintenance: "Sep 10, 2023",
-    nextMaintenance: "Mar 10, 2024",
-    status: "Operational",
-    usageHours: 1100,
-  },
-  {
-    id: "EQ008",
-    name: "Cable Machine",
-    model: "Life Fitness Signature",
-    serialNumber: "LFSC-89012",
-    location: "Weight Area",
-    purchaseDate: "Aug 30, 2022",
-    lastMaintenance: "Oct 15, 2023",
-    nextMaintenance: "Apr 15, 2024",
-    status: "Under Maintenance",
-    usageHours: 1280,
-  },
-  {
-    id: "EQ009",
-    name: "Stair Climber",
-    model: "StairMaster 8",
-    serialNumber: "SM8-90123",
-    location: "Cardio Area",
-    purchaseDate: "Sep 5, 2022",
-    lastMaintenance: "Nov 20, 2023",
-    nextMaintenance: "May 20, 2024",
-    status: "Operational",
-    usageHours: 950,
-  },
-  {
-    id: "EQ010",
-    name: "Dumbbells Set",
-    model: "Rogue Rubber Hex",
-    serialNumber: "RRHD-01234",
-    location: "Free Weights Area",
-    purchaseDate: "Oct 10, 2022",
-    lastMaintenance: "Dec 25, 2023",
-    nextMaintenance: "Jun 25, 2024",
-    status: "Operational",
-    usageHours: 1800,
-  },
-]
+import { EquipmentType } from "@/types/Equipments"
+import { useAllEquipmentsQuery } from "@/lib/user"
 
 export function EquipmentTable() {
   const [selectedEquipment, setSelectedEquipment] = useState<string[]>([])
   const [sortColumn, setSortColumn] = useState<string>("name")
-  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc")
+    const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc")
+    const [equipment, setEquipment] = useState<EquipmentType[]>([]);
+    const { data: allEquipments } = useAllEquipmentsQuery("");
+
+    useEffect(() => {
+        if (allEquipments && allEquipments.length > 0) {
+            setEquipment(allEquipments);
+      }
+    }, [allEquipments])
+    
 
   const toggleSort = (column: string) => {
     if (sortColumn === column) {
@@ -242,7 +129,8 @@ export function EquipmentTable() {
               <TableCell>{item.location}</TableCell>
               <TableCell className="hidden lg:table-cell">{item.nextMaintenance}</TableCell>
               <TableCell>
-                <Badge
+                      <Badge
+                        //   @ts-ignore
                   variant={
                     item.status === "Operational"
                       ? "success"
