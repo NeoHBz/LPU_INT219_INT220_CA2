@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 // import AsyncStorage from "@react-native-async-storage/async-storage";
 // import { getVisitorId } from "../utils/visitorId";
 
-const baseUrl = "";
+const baseUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}`;
 
 export const userApi = createApi({
     reducerPath: "userApi",
@@ -30,7 +30,7 @@ export const userApi = createApi({
         //     } catch (error: any) {}
         // },
     }),
-    tagTypes: ["globalTypes", "refresh"],
+    tagTypes: ["refresh", "userInfo", "classes"],
     endpoints: (builder) => ({
         signup: builder.mutation({
             query: (Credentials) => ({
@@ -39,18 +39,77 @@ export const userApi = createApi({
                 body: { ...Credentials },
             }),
         }),
-        fetchSafetyData: builder.query({
+        signIn: builder.mutation({
+            query: (Credentials) => ({
+                url: "/auth/signIn",
+                method: "POST",
+                body: { ...Credentials },
+            }),
+        }),
+        whoAmi: builder.query({
+            query: () => ({
+                url: "/me",
+                method: "GET",
+            }),
+            providesTags: ["refresh", "userInfo"],
+        }),
+        profile: builder.query({
             query: (location: string) => ({
-                url: `/api/fetchSafetyData/${location}`,
+                url: `/fetchSafetyData/${location}`,
                 method: "GET",
             }),
         }),
-        fetchLandmarks: builder.query({
-            query: (location: string) => ({
-                url: `/api/landMarks/${location}`,
+        allClasses: builder.query({
+            query: () => ({
+                url: "/allClasses",
                 method: "GET",
             }),
+            providesTags: ["classes"]
         }),
+        allMembers: builder.query({
+            query: () => ({
+                url: "/allMembers",
+                method: "GET",
+            }),
+            providesTags: ["classes"]
+        }),
+        allTrainers: builder.query({
+            query: () => ({
+                url: "/allTrainers",
+                method: "GET",
+            }),
+            providesTags: ["classes"]
+        }),
+        allEquipments: builder.query({
+            query: () => ({
+                url: "/allEquipments",
+                method: "GET",
+            }),
+            providesTags: ["classes"]
+        }),
+        maintainanceEquipments: builder.query({
+            query: () => ({
+                url: "/maintainanceEquipments",
+                method: "GET",
+            }),
+            providesTags: ["classes"]
+        }),
+        membershipPlans: builder.query({
+            query: () => ({
+                url: "/membershipPlans",
+                method: "GET",
+            }),
+            providesTags: ["classes"]
+        }),
+        membershipSubscribers: builder.query({
+            query: () => ({
+                url: "/membershipSubscribers",
+                method: "GET",
+            }),
+            providesTags: ["classes"]
+        }),
+
+
 
         // getTransaction: builder.query({
         //     query: (groupId) => ({
@@ -64,6 +123,14 @@ export const userApi = createApi({
 
 export const {
     useSignupMutation,
-    useLazyFetchLandmarksQuery,
-    useLazyFetchSafetyDataQuery,
+    useWhoAmiQuery,
+    useLazyAllClassesQuery,
+    useLazyWhoAmiQuery,
+    useAllMembersQuery, 
+    useAllTrainersQuery,
+    useAllEquipmentsQuery, 
+    useMaintainanceEquipmentsQuery, 
+    useMembershipPlansQuery, 
+    useMembershipSubscribersQuery,
+    useSignInMutation
 } = userApi;

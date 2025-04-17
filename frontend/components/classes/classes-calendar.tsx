@@ -8,106 +8,140 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
+import { ClassesList } from "@/types/ClassesList"
+import { selectIsUserAdmin } from "@/lib/userSlice"
+import { useSelector } from "react-redux"
+import { useLazyAllClassesQuery } from "@/lib/user"
+import { useEffect } from "react"
 
 // Sample data - simplified for calendar view
-const classSchedule = [
-  {
-    id: "C001",
-    name: "Morning Yoga",
-    instructor: {
-      name: "Lisa Chen",
-      image: "/placeholder.svg?height=32&width=32",
-      initials: "LC",
-    },
-    time: "7:00 AM - 8:00 AM",
-    location: "Studio 1",
-    days: [1, 3, 5], // Monday, Wednesday, Friday
-    color: "bg-blue-100 border-blue-300 text-blue-700",
-  },
-  {
-    id: "C002",
-    name: "HIIT Training",
-    instructor: {
-      name: "Marcus Johnson",
-      image: "/placeholder.svg?height=32&width=32",
-      initials: "MJ",
-    },
-    time: "9:30 AM - 10:30 AM",
-    location: "Main Floor",
-    days: [2, 4], // Tuesday, Thursday
-    color: "bg-red-100 border-red-300 text-red-700",
-  },
-  {
-    id: "C003",
-    name: "Spin Class",
-    instructor: {
-      name: "Sophia Rodriguez",
-      image: "/placeholder.svg?height=32&width=32",
-      initials: "SR",
-    },
-    time: "12:00 PM - 1:00 PM",
-    location: "Spin Room",
-    days: [1, 3, 5], // Monday, Wednesday, Friday
-    color: "bg-green-100 border-green-300 text-green-700",
-  },
-  {
-    id: "C004",
-    name: "Pilates",
-    instructor: {
-      name: "James Wilson",
-      image: "/placeholder.svg?height=32&width=32",
-      initials: "JW",
-    },
-    time: "2:30 PM - 3:30 PM",
-    location: "Studio 2",
-    days: [2, 4], // Tuesday, Thursday
-    color: "bg-purple-100 border-purple-300 text-purple-700",
-  },
-  {
-    id: "C005",
-    name: "Evening Yoga",
-    instructor: {
-      name: "Aisha Patel",
-      image: "/placeholder.svg?height=32&width=32",
-      initials: "AP",
-    },
-    time: "6:00 PM - 7:00 PM",
-    location: "Studio 1",
-    days: [1, 3, 5], // Monday, Wednesday, Friday
-    color: "bg-indigo-100 border-indigo-300 text-indigo-700",
-  },
-  {
-    id: "C006",
-    name: "Strength Training",
-    instructor: {
-      name: "David Kim",
-      image: "/placeholder.svg?height=32&width=32",
-      initials: "DK",
-    },
-    time: "5:00 PM - 6:00 PM",
-    location: "Weight Room",
-    days: [2, 4, 6], // Tuesday, Thursday, Saturday
-    color: "bg-yellow-100 border-yellow-300 text-yellow-700",
-  },
-  {
-    id: "C007",
-    name: "Zumba",
-    instructor: {
-      name: "Maria Lopez",
-      image: "/placeholder.svg?height=32&width=32",
-      initials: "ML",
-    },
-    time: "7:30 PM - 8:30 PM",
-    location: "Studio 3",
-    days: [1, 3], // Monday, Wednesday
-    color: "bg-pink-100 border-pink-300 text-pink-700",
-  },
-]
+// const classSchedule = [
+//   {
+//     id: "C001",
+//     name: "Morning Yoga",
+//     instructor: {
+//       name: "Lisa Chen",
+//       image: "/placeholder.svg?height=32&width=32",
+//       initials: "LC",
+//     },
+//     time: "7:00 AM - 8:00 AM",
+//     location: "Studio 1",
+//     days: [1, 3, 5], // Monday, Wednesday, Friday
+//     color: "bg-blue-100 border-blue-300 text-blue-700",
+//   },
+//   {
+//     id: "C002",
+//     name: "HIIT Training",
+//     instructor: {
+//       name: "Marcus Johnson",
+//       image: "/placeholder.svg?height=32&width=32",
+//       initials: "MJ",
+//     },
+//     time: "9:30 AM - 10:30 AM",
+//     location: "Main Floor",
+//     days: [2, 4], // Tuesday, Thursday
+//     color: "bg-red-100 border-red-300 text-red-700",
+//   },
+//   {
+//     id: "C003",
+//     name: "Spin Class",
+//     instructor: {
+//       name: "Sophia Rodriguez",
+//       image: "/placeholder.svg?height=32&width=32",
+//       initials: "SR",
+//     },
+//     time: "12:00 PM - 1:00 PM",
+//     location: "Spin Room",
+//     days: [1, 3, 5], // Monday, Wednesday, Friday
+//     color: "bg-green-100 border-green-300 text-green-700",
+//   },
+//   {
+//     id: "C004",
+//     name: "Pilates",
+//     instructor: {
+//       name: "James Wilson",
+//       image: "/placeholder.svg?height=32&width=32",
+//       initials: "JW",
+//     },
+//     time: "2:30 PM - 3:30 PM",
+//     location: "Studio 2",
+//     days: [2, 4], // Tuesday, Thursday
+//     color: "bg-purple-100 border-purple-300 text-purple-700",
+//   },
+//   {
+//     id: "C005",
+//     name: "Evening Yoga",
+//     instructor: {
+//       name: "Aisha Patel",
+//       image: "/placeholder.svg?height=32&width=32",
+//       initials: "AP",
+//     },
+//     time: "6:00 PM - 7:00 PM",
+//     location: "Studio 1",
+//     days: [1, 3, 5], // Monday, Wednesday, Friday
+//     color: "bg-indigo-100 border-indigo-300 text-indigo-700",
+//   },
+//   {
+//     id: "C006",
+//     name: "Strength Training",
+//     instructor: {
+//       name: "David Kim",
+//       image: "/placeholder.svg?height=32&width=32",
+//       initials: "DK",
+//     },
+//     time: "5:00 PM - 6:00 PM",
+//     location: "Weight Room",
+//     days: [2, 4, 6], // Tuesday, Thursday, Saturday
+//     color: "bg-yellow-100 border-yellow-300 text-yellow-700",
+//   },
+//   {
+//     id: "C007",
+//     name: "Zumba",
+//     instructor: {
+//       name: "Maria Lopez",
+//       image: "/placeholder.svg?height=32&width=32",
+//       initials: "ML",
+//     },
+//     time: "7:30 PM - 8:30 PM",
+//     location: "Studio 3",
+//     days: [1, 3], // Monday, Wednesday
+//     color: "bg-pink-100 border-pink-300 text-pink-700",
+//   },
+// ]
 
 export function ClassesCalendar() {
-  const [currentDate, setCurrentDate] = React.useState(new Date())
+    const [currentDate, setCurrentDate] = React.useState(new Date())
+    const [classSchedule, setClassSchedule] = React.useState<ClassesList[]>([])
   const startDate = startOfWeek(currentDate, { weekStartsOn: 1 }) // Start from Monday
-
+    const isAdmin = useSelector(selectIsUserAdmin);
+    const [getClasses, { data: classesOfUser, isError, isLoading }] = useLazyAllClassesQuery();
+    const colorPalettes = [
+        { bg: "bg-blue-100", border: "border-blue-300", text: "text-blue-700" },
+        { bg: "bg-red-100", border: "border-red-300", text: "text-red-700" },
+        { bg: "bg-green-100", border: "border-green-300", text: "text-green-700" },
+        { bg: "bg-purple-100", border: "border-purple-300", text: "text-purple-700" },
+        { bg: "bg-indigo-100", border: "border-indigo-300", text: "text-indigo-700" },
+        { bg: "bg-yellow-100", border: "border-yellow-300", text: "text-yellow-700" },
+        { bg: "bg-pink-100", border: "border-pink-300", text: "text-pink-700" },
+        { bg: "bg-teal-100", border: "border-teal-300", text: "text-teal-700" },
+    ];
+    React.useEffect(() => {
+            if (isAdmin) {
+                getClasses("");
+            }
+    }, [isAdmin])
+      useEffect(() => {
+          if (classesOfUser) {
+                console.log("Classes of user", classesOfUser)
+                setClassSchedule(classesOfUser)
+            }
+        }, [classesOfUser, isError, isLoading])
+    
+    const getRandomColor = () => {
+        const randomIndex = Math.floor(Math.random() * colorPalettes.length);
+        const palette = colorPalettes[randomIndex];
+        return `${palette.bg} ${palette.border} ${palette.text}`;
+    };
   const nextWeek = () => {
     setCurrentDate(addWeeks(currentDate, 1))
   }
@@ -166,15 +200,15 @@ export function ClassesCalendar() {
               ) : (
                 <div className="space-y-2">
                   {dayClasses.map((cls) => (
-                    <Card key={cls.id} className={`cursor-pointer border ${cls.color}`}>
+                    <Card key={cls.id} className={`cursor-pointer border ${getRandomColor()}`}>
                       <CardContent className="p-2">
                         <div className="text-sm font-medium">{cls.name}</div>
                         <div className="flex items-center gap-1 text-xs">
                           <Avatar className="h-5 w-5">
-                            <AvatarImage src={cls.instructor.image} alt={cls.instructor.name} />
-                            <AvatarFallback className="text-[10px]">{cls.instructor.initials}</AvatarFallback>
+                            <AvatarImage src={cls.trainer.image} alt={cls.trainer.name} />
+                            <AvatarFallback className="text-[10px]">{cls.trainer.name}</AvatarFallback>
                           </Avatar>
-                          {cls.instructor.name}
+                          {cls.trainer.name}
                         </div>
                         <div className="mt-1 text-xs">{cls.time}</div>
                         <div className="mt-1 flex justify-between text-xs">

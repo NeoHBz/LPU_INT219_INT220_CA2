@@ -1,11 +1,12 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit";
 interface StateInterface {
     userInfo: {
+        id: string;
         firstName: string;
         lastName: string;
         email: string;
         isAdmin: boolean;
-        phoneNumber: string;
+        phone: string;
         profilePicture?: string;
         address: string;
         city: string;
@@ -13,22 +14,28 @@ interface StateInterface {
         zipCode: string;
         fitnessGoals: string;
         healthConditions: string;
+        emergencyContact: string;
+        emergencyPhone: string;
+
     }
 }
 const initialState: StateInterface = {
     userInfo: {
+        id: "",
         firstName: "",
         lastName: "",
         email: "",
         isAdmin: false,
-        phoneNumber: "",
+        phone: "",
         profilePicture: "",
         address: "",
         city: "",
         state: "",
         zipCode: "",
         fitnessGoals: "",
-        healthConditions: ""
+        healthConditions: "",
+        emergencyContact: "",
+        emergencyPhone: ""
     },
 
 };
@@ -42,17 +49,23 @@ const fitnessCenterData = createSlice({
                 payload: Pick<StateInterface, "userInfo">;
             },
         ) => {
-            state.userInfo  = action.payload.userInfo;
+            state.userInfo = action.payload.userInfo;
         },
-        
+
     },
 });
 
 export const { setUserInformation } = fitnessCenterData.actions;
 export default fitnessCenterData.reducer;
 
-export const selectUserInformation = (state: any) => state.userInformation.userInfo;
+export const selectUserInformation = (state: { userInformation: StateInterface }) => state.userInformation.userInfo;
 export const selectIsUserAdmin = createSelector(
     selectUserInformation,
     (userInfo) => userInfo.isAdmin
+
+)
+export const selectOnlyLogin = createSelector(
+    selectUserInformation,
+
+    (userInfo) => userInfo.email !== ""
 )

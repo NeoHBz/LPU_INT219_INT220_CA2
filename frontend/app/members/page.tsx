@@ -14,11 +14,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { MembersTable } from "@/components/members/members-table"
+import { MainNav } from "@/components/main-nav"
 
 export default function MembersPage() {
   const [filterStatus, setFilterStatus] = useState<string[]>(["active"])
 
-  return (
+    return (
+        <>
+            <MainNav />
     <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
       <div className="flex items-center justify-between space-y-2">
         <h2 className="text-3xl font-bold tracking-tight">Members</h2>
@@ -26,7 +29,7 @@ export default function MembersPage() {
           <Link
             href="/members/new"
             className="inline-flex h-9 items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow hover:bg-primary/90"
-          >
+                        >
             <UserPlus className="mr-2 h-4 w-4" />
             Add Member
           </Link>
@@ -59,37 +62,37 @@ export default function MembersPage() {
                     <DropdownMenuCheckboxItem
                       checked={filterStatus.includes("active")}
                       onCheckedChange={(checked) => {
-                        if (checked) {
-                          setFilterStatus([...filterStatus, "active"])
-                        } else {
-                          setFilterStatus(filterStatus.filter((item) => item !== "active"))
-                        }
-                      }}
-                    >
+                                                    if (checked) {
+                                                        setFilterStatus([...filterStatus, "active"])
+                                                    } else {
+                                                        setFilterStatus(filterStatus.filter((item) => item !== "active"))
+                                                    }
+                                                }}
+                                            >
                       Active Members
                     </DropdownMenuCheckboxItem>
                     <DropdownMenuCheckboxItem
                       checked={filterStatus.includes("inactive")}
                       onCheckedChange={(checked) => {
-                        if (checked) {
-                          setFilterStatus([...filterStatus, "inactive"])
-                        } else {
-                          setFilterStatus(filterStatus.filter((item) => item !== "inactive"))
-                        }
-                      }}
-                    >
+                                                    if (checked) {
+                                                        setFilterStatus([...filterStatus, "inactive"])
+                                                    } else {
+                                                        setFilterStatus(filterStatus.filter((item) => item !== "inactive"))
+                                                    }
+                                                }}
+                                            >
                       Inactive Members
                     </DropdownMenuCheckboxItem>
                     <DropdownMenuCheckboxItem
                       checked={filterStatus.includes("expired")}
                       onCheckedChange={(checked) => {
-                        if (checked) {
-                          setFilterStatus([...filterStatus, "expired"])
-                        } else {
-                          setFilterStatus(filterStatus.filter((item) => item !== "expired"))
-                        }
-                      }}
-                    >
+                                                    if (checked) {
+                                                        setFilterStatus([...filterStatus, "expired"])
+                                                    } else {
+                                                        setFilterStatus(filterStatus.filter((item) => item !== "expired"))
+                                                    }
+                                                }}
+                                            >
                       Expired Memberships
                     </DropdownMenuCheckboxItem>
                   </DropdownMenuContent>
@@ -105,6 +108,7 @@ export default function MembersPage() {
         </CardContent>
       </Card>
     </div>
+        </>
   )
 }
 

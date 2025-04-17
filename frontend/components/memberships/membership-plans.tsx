@@ -1,3 +1,4 @@
+"use client"
 import Link from "next/link"
 import { Check, Edit, MoreHorizontal, Trash2 } from "lucide-react"
 
@@ -11,76 +12,22 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { useEffect, useState } from "react"
+import { MembershipPlansType } from "@/types/Membership"
+import { useMembershipPlansQuery } from "@/lib/user"
 
-// Sample data
-const plans = [
-  {
-    id: "plan-1",
-    name: "Basic",
-    price: 29.99,
-    interval: "month",
-    description: "Access to basic gym facilities during off-peak hours",
-    features: [
-      "Access to gym equipment",
-      "Locker room access",
-      "Off-peak hours only (9AM-4PM)",
-      "No guest passes",
-      "No class access",
-    ],
-    popular: false,
-    members: 210,
-  },
-  {
-    id: "plan-2",
-    name: "Standard",
-    price: 49.99,
-    interval: "month",
-    description: "Full access to gym facilities and limited classes",
-    features: [
-      "24/7 gym access",
-      "Locker room access",
-      "2 guest passes per month",
-      "Access to 5 classes per month",
-      "Fitness assessment",
-    ],
-    popular: true,
-    members: 620,
-  },
-  {
-    id: "plan-3",
-    name: "Premium",
-    price: 79.99,
-    interval: "month",
-    description: "Unlimited access to all facilities and classes",
-    features: [
-      "24/7 gym access",
-      "Locker room access with towel service",
-      "5 guest passes per month",
-      "Unlimited class access",
-      "Monthly personal training session",
-      "Nutrition consultation",
-    ],
-    popular: false,
-    members: 540,
-  },
-  {
-    id: "plan-4",
-    name: "Day Pass",
-    price: 15.99,
-    interval: "day",
-    description: "Single day access to all gym facilities",
-    features: [
-      "Full day gym access",
-      "Locker room access",
-      "No guest passes",
-      "Access to classes on the day (if available)",
-    ],
-    popular: false,
-    members: 88,
-  },
-]
+
+
 
 export function MembershipPlans() {
+    const [plans, setPlans] = useState<MembershipPlansType[]>([]);
+    const { data: allMemberships } = useMembershipPlansQuery("");
+    useEffect(() => {
+        if (allMemberships && allMemberships.length > 0) {
+            setPlans(allMemberships);
+      }
+    }, [allMemberships])
+    
   return (
     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
       {plans.map((plan) => (
