@@ -29,7 +29,7 @@ class PlanController {
         }, $plans);
         
         return Response::json([
-            'success' => true,
+            'status' => 'success',
             'data' => $transformedPlans
         ]);
     }
@@ -39,7 +39,7 @@ class PlanController {
         
         if (!$plan) {
             return Response::json([
-                'success' => false,
+                'status' => 'error',
                 'message' => 'Plan not found'
             ], 404);
         }
@@ -56,7 +56,7 @@ class PlanController {
         ];
         
         return Response::json([
-            'success' => true,
+            'status' => 'success',
             'data' => $transformedPlan
         ]);
     }
