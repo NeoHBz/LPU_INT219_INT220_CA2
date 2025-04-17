@@ -13,6 +13,17 @@ class UserController {
         $this->userModel = new User();
     }
     
+    private function validateAndSanitizeInput($data) {
+        // Validate and sanitize input data
+        $data['username'] = filter_var($data['username'], FILTER_SANITIZE_STRING);
+        $data['email'] = filter_var($data['email'], FILTER_SANITIZE_EMAIL);
+        $data['password'] = password_hash($data['password'], PASSWORD_BCRYPT);
+        $data['first_name'] = filter_var($data['first_name'], FILTER_SANITIZE_STRING);
+        $data['last_name'] = filter_var($data['last_name'], FILTER_SANITIZE_STRING);
+        
+        return $data;
+    }
+
     public function login() {
         // Get POST data
         $data = json_decode(file_get_contents('php://input'), true);
@@ -24,7 +35,17 @@ class UserController {
                 'message' => 'Email and password are required'
             ], 400);
         }
-        
+
+        // Sanitize input data
+        $data = $this->validateAndSanitizeInput($data);
+        // Validate email format
+        if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+            return Response::json([
+                'status' => 'error',
+                'message' => 'Invalid email format'
+            ], 400);
+        }
+
         // Find user by email
         $user = $this->userModel->findByEmail($data['email']);
         
@@ -83,6 +104,15 @@ class UserController {
             ], 409);
         }
         
+        // Sanitize input data
+        $data = $this->validateAndSanitizeInput($data);
+        // Validate email format
+        if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+            return Response::json([
+                'status' => 'error',
+                'message' => 'Invalid email format'
+            ], 400);
+        }
         // Create user
         $userId = $this->userModel->create($data);
         
