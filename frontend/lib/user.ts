@@ -39,6 +39,13 @@ export const userApi = createApi({
                 body: { ...Credentials },
             }),
         }),
+        signIn: builder.mutation({
+            query: (Credentials) => ({
+                url: "/auth/signIn",
+                method: "POST",
+                body: { ...Credentials },
+            }),
+        }),
         whoAmi: builder.query({
             query: () => ({
                 url: "/me",
@@ -124,5 +131,6 @@ export const {
     useAllEquipmentsQuery, 
     useMaintainanceEquipmentsQuery, 
     useMembershipPlansQuery, 
-    useMembershipSubscribersQuery
+    useMembershipSubscribersQuery,
+    useSignInMutation
 } = userApi;
