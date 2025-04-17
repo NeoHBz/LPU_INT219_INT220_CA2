@@ -23,7 +23,6 @@ class Member {
         $sql = "SELECT 
                     m.id,
                     m.user_id,
-                    m.plan_id,
                     m.expiry_date,
                     m.created_at,
                     m.updated_at,
@@ -34,12 +33,29 @@ class Member {
                         'email', u.email,
                         'phone_number', u.phone_number,
                         'address', u.address
-                    ) AS user
-                    FROM members m
-                    JOIN users u ON m.user_id = u.id;
+                    ) AS user,
+                    JSON_OBJECT(
+                        'id', p.id,
+                        'plan_name', p.plan_name,
+                        'price', p.price,
+                        'duration', p.duration,
+                        'membership_type', p.membership_type,
+                        'created_at', p.created_at,
+                        'updated_at', p.updated_at
+                    ) AS plan
+                FROM members m
+                JOIN users u ON m.user_id = u.id
+                JOIN plans p ON m.plan_id = p.id;
         ";
         $stmt = $this->db->query($sql);
-        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+        // Decode JSON fields
+        foreach ($rows as &$row) {
+            // $row['user'] = json_decode($row['user'], true);
+            $row['plan'] = json_decode($row['plan'], true);
+        }
+        return $rows;
     }
 
     public function create(array $data): bool {
