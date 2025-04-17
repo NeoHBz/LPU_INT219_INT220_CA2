@@ -18,8 +18,8 @@
     },
     "scripts": {
         "start": "php -S localhost:9999 index.php",
-        "db:init": "mysql --force -u root -p'passwd0x00' < database/schema.sql && mysql --force -u root -p'passwd0x00' < database/seed.sql",
-        "db:drop": "mysql --force -u root -p'passwd0x00' -e 'DROP DATABASE IF EXISTS fitness'"
+        "db:init": "mysql --force -h 141.148.194.201 -P 3306 -u root -p'2Lu8Ly4xnUOwrDPCwRRX0YYyJrWcPY8Y' < database/schema.sql && mysql --force -h 141.148.194.201 -P 3306 -u root -p'2Lu8Ly4xnUOwrDPCwRRX0YYyJrWcPY8Y' < database/seed.sql",
+        "db:drop": "mysql --force -h 141.148.194.201 -P 3306 -u root -p'2Lu8Ly4xnUOwrDPCwRRX0YYyJrWcPY8Y' -e 'DROP DATABASE IF EXISTS fitness'"
     },
     "config": {
         "sort-packages": true,
