@@ -13,7 +13,7 @@ class Trainer {
     
     public function findAll() {
         $sql = "SELECT t.id, t.rating, t.reviews_count as reviews, t.bio, 
-                    u.id as user_id, u.first_name, u.last_name, u.username, u.email, u.created_at
+                    u.id as user_id, u.first_name, u.last_name, u.username, u.email, u.phone_number, u.created_at
                 FROM trainers t
                 JOIN users u ON t.user_id = u.id";
         $stmt = $this->db->query($sql);
@@ -48,13 +48,14 @@ class Trainer {
                 'name' => $trainer['first_name'] . ' ' . $trainer['last_name'],
                 'username' => $trainer['username'],
                 'email' => $trainer['email'],
+                'phone_number' => $trainer['phone_number'],
                 'created_at' => $trainer['created_at']
             ]
         ];
     }
     public function findById($id) {
         $sql = "SELECT t.id, t.rating, t.reviews_count as reviews, t.bio, 
-                u.id as user_id, u.first_name, u.last_name, u.username, u.email, u.created_at
+                u.id as user_id, u.first_name, u.last_name, u.username, u.email, u.phone_number, u.created_at
                 FROM trainers t
                 JOIN users u ON t.user_id = u.id
                 WHERE t.id = ? LIMIT 1";
