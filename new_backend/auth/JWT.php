@@ -4,7 +4,7 @@ namespace App\Auth;
 
 class JWT {
     public static function encode($payload) {
-        $payload['exp'] = time() + 3600; // 1 hour expiration
+        $payload['exp'] = time() + $_ENV['JWT_EXPIRATION'] ?? 3600; // 1 hour expiration
         
         return base64_encode(json_encode($payload));
     }
