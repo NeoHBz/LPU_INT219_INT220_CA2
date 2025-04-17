@@ -13,6 +13,7 @@ CREATE TABLE
         password VARCHAR(255) NOT NULL,
         phone_number VARCHAR(20) NOT NULL,
         address VARCHAR(255) NOT NULL,
+        isAdmin BOOLEAN DEFAULT FALSE,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP
     );
