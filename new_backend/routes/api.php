@@ -6,6 +6,8 @@ use App\Controllers\UserController;
 use App\Controllers\MemberController;
 use App\Controllers\PlanController;
 use App\Controllers\TrainerController;
+use App\Controllers\ClassController;
+use App\Controllers\AttendanceController;
 
 $router = new Router();
 
@@ -29,5 +31,13 @@ $router->get('/plans', [PlanController::class, 'getAll']);
 // Trainer Routes
 $router->get('/trainers', [TrainerController::class, 'index']);
 $router->get('/trainers/{id}', [TrainerController::class, 'findById']);
+
+// Class Routes
+$router->get('/classes', [ClassController::class, 'index']);
+$router->get('/classes/{id}', [ClassController::class, 'show']);
+
+// Attendance Routes
+$router->get('/attendance/{date}', [AttendanceController::class, 'getByDate']);
+$router->post('/attendance', [AttendanceController::class, 'create']);
 
 return $router;
