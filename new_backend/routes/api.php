@@ -8,6 +8,7 @@ use App\Controllers\PlanController;
 use App\Controllers\TrainerController;
 use App\Controllers\ClassController;
 use App\Controllers\AttendanceController;
+use App\Controllers\EquipmentController;
 
 $router = new Router();
 
@@ -39,5 +40,9 @@ $router->get('/classes/{id}', [ClassController::class, 'show']);
 // Attendance Routes
 $router->get('/attendance/{date}', [AttendanceController::class, 'getByDate']);
 $router->post('/attendance', [AttendanceController::class, 'create']);
+
+// Equipment Routes
+$router->get('/equipment', [EquipmentController::class, 'index']);
+$router->get('/equipment/{id}', [EquipmentController::class, 'show']);
 
 return $router;
