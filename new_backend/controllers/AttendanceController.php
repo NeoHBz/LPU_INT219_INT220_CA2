@@ -31,6 +31,27 @@ class AttendanceController {
                 'message' => 'member_id and check_in are required'
             ], 400);
         }
+        
+        // Parse and validate date format for check_in
+        if (!strtotime($data['check_in'])) {
+            return Response::json([
+                'status' => 'error',
+                'message' => 'Invalid check_in date format'
+            ], 400);
+        }
+        $data['check_in'] = date('Y-m-d H:i:s', strtotime($data['check_in']));
+        
+        // Parse and validate date format for check_out if provided
+        if (!empty($data['check_out'])) {
+            if (!strtotime($data['check_out'])) {
+                return Response::json([
+                    'status' => 'error',
+                    'message' => 'Invalid check_out date format'
+                ], 400);
+            }
+            $data['check_out'] = date('Y-m-d H:i:s', strtotime($data['check_out']));
+        }
+        
         $attendanceId = $this->attendanceModel->create($data);
         return Response::json([
             'status' => 'success',
