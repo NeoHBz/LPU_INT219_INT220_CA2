@@ -16,6 +16,7 @@ export function MainNav() {
     const isAdmin = useSelector(selectIsUserAdmin);
     const pathname = usePathname()
     const isLogin = useSelector(selectOnlyLogin);
+
     const allRoutes = [
         { href: "/", label: "Home" },
         { href: "/dashboard", label: "Dashboard", adminOnly: true },
@@ -77,9 +78,9 @@ export function MainNav() {
 
                         </Link>
                     ))}
-                    <Button asChild>
+                    {!isLogin ? (<Button asChild>
                         <Link href="/login">Login</Link>
-                    </Button>
+                    </Button>) : <Button>Logout</Button>}
                 </nav>
                 <Sheet open={open} onOpenChange={setOpen}>
                     <SheetTrigger asChild className="md:hidden ml-auto">
@@ -121,11 +122,11 @@ export function MainNav() {
                                     {route.label}
                                 </Link>
                             ))}
-                            <Button asChild>
+                            {!isLogin ? (<Button asChild>
                                 <Link href="/login" onClick={() => setOpen(false)}>
                                     Login
                                 </Link>
-                            </Button>
+                            </Button>) : (<Button>Logout</Button>)}
                         </nav>
                     </SheetContent>
                 </Sheet>

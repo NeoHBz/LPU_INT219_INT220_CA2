@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { ArrowUpDown, Calendar, CreditCard, MoreHorizontal, Pencil, RefreshCw } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -15,174 +15,24 @@ import {
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { MemberShipSubscribers } from "@/types/Membership"
+import { useMembershipSubscribersQuery } from "@/lib/user"
 
 // Sample data
-const memberships = [
-  {
-    id: "MS001",
-    member: {
-      id: "M001",
-      name: "John Smith",
-      image: "/placeholder.svg?height=40&width=40",
-      initials: "JS",
-    },
-    plan: "Premium",
-    startDate: "Jan 15, 2023",
-    expiryDate: "Jan 15, 2024",
-    paymentStatus: "Paid",
-    paymentMethod: "Credit Card",
-    amount: "$79.99",
-    autoRenew: true,
-  },
-  {
-    id: "MS002",
-    member: {
-      id: "M002",
-      name: "Sarah Johnson",
-      image: "/placeholder.svg?height=40&width=40",
-      initials: "SJ",
-    },
-    plan: "Standard",
-    startDate: "Feb 3, 2023",
-    expiryDate: "Feb 3, 2024",
-    paymentStatus: "Paid",
-    paymentMethod: "Credit Card",
-    amount: "$49.99",
-    autoRenew: true,
-  },
-  {
-    id: "MS003",
-    member: {
-      id: "M003",
-      name: "Michael Brown",
-      image: "/placeholder.svg?height=40&width=40",
-      initials: "MB",
-    },
-    plan: "Basic",
-    startDate: "Mar 12, 2023",
-    expiryDate: "Mar 12, 2024",
-    paymentStatus: "Overdue",
-    paymentMethod: "Bank Transfer",
-    amount: "$29.99",
-    autoRenew: false,
-  },
-  {
-    id: "MS004",
-    member: {
-      id: "M004",
-      name: "Emily Davis",
-      image: "/placeholder.svg?height=40&width=40",
-      initials: "ED",
-    },
-    plan: "Premium",
-    startDate: "Apr 5, 2023",
-    expiryDate: "Apr 5, 2024",
-    paymentStatus: "Paid",
-    paymentMethod: "Credit Card",
-    amount: "$79.99",
-    autoRenew: true,
-  },
-  {
-    id: "MS005",
-    member: {
-      id: "M005",
-      name: "David Wilson",
-      image: "/placeholder.svg?height=40&width=40",
-      initials: "DW",
-    },
-    plan: "Standard",
-    startDate: "May 20, 2023",
-    expiryDate: "Nov 20, 2023",
-    paymentStatus: "Expired",
-    paymentMethod: "PayPal",
-    amount: "$49.99",
-    autoRenew: false,
-  },
-  {
-    id: "MS006",
-    member: {
-      id: "M006",
-      name: "Jessica Martinez",
-      image: "/placeholder.svg?height=40&width=40",
-      initials: "JM",
-    },
-    plan: "Premium",
-    startDate: "Jun 8, 2023",
-    expiryDate: "Jun 8, 2024",
-    paymentStatus: "Paid",
-    paymentMethod: "Credit Card",
-    amount: "$79.99",
-    autoRenew: true,
-  },
-  {
-    id: "MS007",
-    member: {
-      id: "M007",
-      name: "Robert Taylor",
-      image: "/placeholder.svg?height=40&width=40",
-      initials: "RT",
-    },
-    plan: "Basic",
-    startDate: "Jul 17, 2023",
-    expiryDate: "Jul 17, 2024",
-    paymentStatus: "Paid",
-    paymentMethod: "Bank Transfer",
-    amount: "$29.99",
-    autoRenew: true,
-  },
-  {
-    id: "MS008",
-    member: {
-      id: "M008",
-      name: "Jennifer Anderson",
-      image: "/placeholder.svg?height=40&width=40",
-      initials: "JA",
-    },
-    plan: "Standard",
-    startDate: "Aug 22, 2023",
-    expiryDate: "Aug 22, 2024",
-    paymentStatus: "Paid",
-    paymentMethod: "Credit Card",
-    amount: "$49.99",
-    autoRenew: true,
-  },
-  {
-    id: "MS009",
-    member: {
-      id: "M009",
-      name: "Christopher Lee",
-      image: "/placeholder.svg?height=40&width=40",
-      initials: "CL",
-    },
-    plan: "Premium",
-    startDate: "Sep 10, 2023",
-    expiryDate: "Sep 10, 2024",
-    paymentStatus: "Pending",
-    paymentMethod: "PayPal",
-    amount: "$79.99",
-    autoRenew: true,
-  },
-  {
-    id: "MS010",
-    member: {
-      id: "M010",
-      name: "Amanda White",
-      image: "/placeholder.svg?height=40&width=40",
-      initials: "AW",
-    },
-    plan: "Basic",
-    startDate: "Oct 5, 2023",
-    expiryDate: "Oct 5, 2024",
-    paymentStatus: "Paid",
-    paymentMethod: "Credit Card",
-    amount: "$29.99",
-    autoRenew: true,
-  },
-]
+// const memberships = 
 
 export function MembershipTable() {
+    const [memberships, setMemberships] = useState<MemberShipSubscribers[]>([]);
   const [sortColumn, setSortColumn] = useState<string>("startDate")
-  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc")
+    const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc")
+    const { data: Subscribers } = useMembershipSubscribersQuery("");
+    useEffect(() => {
+        if (Subscribers && Subscribers.length > 0) {
+            setMemberships(Subscribers);
+        }
+    }, [Subscribers])
+    
+    
 
   const toggleSort = (column: string) => {
     if (sortColumn === column) {
@@ -252,7 +102,7 @@ export function MembershipTable() {
                 <div className="flex items-center gap-2">
                   <Avatar className="h-8 w-8">
                     <AvatarImage src={membership.member.image} alt={membership.member.name} />
-                    <AvatarFallback>{membership.member.initials}</AvatarFallback>
+                    <AvatarFallback>{membership.member.name}</AvatarFallback>
                   </Avatar>
                   <div>
                     <div className="font-medium">{membership.member.name}</div>

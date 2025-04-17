@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import { ArrowUpDown, MoreHorizontal, Pencil, Trash2, UserCog } from "lucide-react"
 
@@ -17,136 +17,22 @@ import {
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-
-// Sample data
-const members = [
-  {
-    id: "M001",
-    name: "John Smith",
-    email: "john.smith@example.com",
-    phone: "(555) 123-4567",
-    membershipType: "Premium",
-    status: "Active",
-    joinDate: "Jan 15, 2023",
-    expiryDate: "Jan 15, 2024",
-    image: "/placeholder.svg?height=40&width=40",
-    initials: "JS",
-  },
-  {
-    id: "M002",
-    name: "Sarah Johnson",
-    email: "sarah.j@example.com",
-    phone: "(555) 234-5678",
-    membershipType: "Standard",
-    status: "Active",
-    joinDate: "Feb 3, 2023",
-    expiryDate: "Feb 3, 2024",
-    image: "/placeholder.svg?height=40&width=40",
-    initials: "SJ",
-  },
-  {
-    id: "M003",
-    name: "Michael Brown",
-    email: "michael.b@example.com",
-    phone: "(555) 345-6789",
-    membershipType: "Basic",
-    status: "Inactive",
-    joinDate: "Mar 12, 2023",
-    expiryDate: "Mar 12, 2024",
-    image: "/placeholder.svg?height=40&width=40",
-    initials: "MB",
-  },
-  {
-    id: "M004",
-    name: "Emily Davis",
-    email: "emily.d@example.com",
-    phone: "(555) 456-7890",
-    membershipType: "Premium",
-    status: "Active",
-    joinDate: "Apr 5, 2023",
-    expiryDate: "Apr 5, 2024",
-    image: "/placeholder.svg?height=40&width=40",
-    initials: "ED",
-  },
-  {
-    id: "M005",
-    name: "David Wilson",
-    email: "david.w@example.com",
-    phone: "(555) 567-8901",
-    membershipType: "Standard",
-    status: "Expired",
-    joinDate: "May 20, 2023",
-    expiryDate: "Nov 20, 2023",
-    image: "/placeholder.svg?height=40&width=40",
-    initials: "DW",
-  },
-  {
-    id: "M006",
-    name: "Jessica Martinez",
-    email: "jessica.m@example.com",
-    phone: "(555) 678-9012",
-    membershipType: "Premium",
-    status: "Active",
-    joinDate: "Jun 8, 2023",
-    expiryDate: "Jun 8, 2024",
-    image: "/placeholder.svg?height=40&width=40",
-    initials: "JM",
-  },
-  {
-    id: "M007",
-    name: "Robert Taylor",
-    email: "robert.t@example.com",
-    phone: "(555) 789-0123",
-    membershipType: "Basic",
-    status: "Active",
-    joinDate: "Jul 17, 2023",
-    expiryDate: "Jul 17, 2024",
-    image: "/placeholder.svg?height=40&width=40",
-    initials: "RT",
-  },
-  {
-    id: "M008",
-    name: "Jennifer Anderson",
-    email: "jennifer.a@example.com",
-    phone: "(555) 890-1234",
-    membershipType: "Standard",
-    status: "Active",
-    joinDate: "Aug 22, 2023",
-    expiryDate: "Aug 22, 2024",
-    image: "/placeholder.svg?height=40&width=40",
-    initials: "JA",
-  },
-  {
-    id: "M009",
-    name: "Christopher Lee",
-    email: "chris.l@example.com",
-    phone: "(555) 901-2345",
-    membershipType: "Premium",
-    status: "Inactive",
-    joinDate: "Sep 10, 2023",
-    expiryDate: "Sep 10, 2024",
-    image: "/placeholder.svg?height=40&width=40",
-    initials: "CL",
-  },
-  {
-    id: "M010",
-    name: "Amanda White",
-    email: "amanda.w@example.com",
-    phone: "(555) 012-3456",
-    membershipType: "Basic",
-    status: "Active",
-    joinDate: "Oct 5, 2023",
-    expiryDate: "Oct 5, 2024",
-    image: "/placeholder.svg?height=40&width=40",
-    initials: "AW",
-  },
-]
+import { MemberType } from "@/types/Members"
+import { useAllMembersQuery } from "@/lib/user"
 
 export function MembersTable() {
   const [selectedMembers, setSelectedMembers] = useState<string[]>([])
   const [sortColumn, setSortColumn] = useState<string>("name")
-  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc")
+    const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc")
+    const [members, setMembers] = useState<MemberType[]>([]);
+    const { data: membersData, isError } = useAllMembersQuery("");
 
+    useEffect(() => {
+        if(membersData && membersData.length > 0) {
+            setMembers(membersData);
+        }
+    }, [membersData]);
+    
   const toggleSort = (column: string) => {
     if (sortColumn === column) {
       setSortDirection(sortDirection === "asc" ? "desc" : "asc")
@@ -240,7 +126,7 @@ export function MembersTable() {
                 <div className="flex items-center gap-2">
                   <Avatar className="h-8 w-8">
                     <AvatarImage src={member.image} alt={member.name} />
-                    <AvatarFallback>{member.initials}</AvatarFallback>
+                    <AvatarFallback>{member.name}</AvatarFallback>
                   </Avatar>
                   <span>{member.name}</span>
                 </div>
@@ -263,7 +149,7 @@ export function MembersTable() {
               <TableCell>
                 <Badge
                   variant={
-                    member.status === "Active" ? "success" : member.status === "Inactive" ? "warning" : "destructive"
+                    member.status === "Active" ? "default" : member.status === "Inactive" ? "outline" : "destructive"
                   }
                 >
                   {member.status}

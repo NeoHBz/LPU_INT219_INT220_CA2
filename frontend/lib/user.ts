@@ -30,7 +30,7 @@ export const userApi = createApi({
         //     } catch (error: any) {}
         // },
     }),
-    tagTypes: ["refresh", "userInfo"],
+    tagTypes: ["refresh", "userInfo", "classes"],
     endpoints: (builder) => ({
         signup: builder.mutation({
             query: (Credentials) => ({
@@ -52,6 +52,55 @@ export const userApi = createApi({
                 method: "GET",
             }),
         }),
+        allClasses: builder.query({
+            query: () => ({
+                url: "/allClasses",
+                method: "GET",
+            }),
+            providesTags: ["classes"]
+        }),
+        allMembers: builder.query({
+            query: () => ({
+                url: "/allMembers",
+                method: "GET",
+            }),
+            providesTags: ["classes"]
+        }),
+        allTrainers: builder.query({
+            query: () => ({
+                url: "/allTrainers",
+                method: "GET",
+            }),
+            providesTags: ["classes"]
+        }),
+        allEquipments: builder.query({
+            query: () => ({
+                url: "/allEquipments",
+                method: "GET",
+            }),
+            providesTags: ["classes"]
+        }),
+        maintainanceEquipments: builder.query({
+            query: () => ({
+                url: "/maintainanceEquipments",
+                method: "GET",
+            }),
+            providesTags: ["classes"]
+        }),
+        membershipPlans: builder.query({
+            query: () => ({
+                url: "/membershipPlans",
+                method: "GET",
+            }),
+            providesTags: ["classes"]
+        }),
+        membershipSubscribers: builder.query({
+            query: () => ({
+                url: "/membershipSubscribers",
+                method: "GET",
+            }),
+            providesTags: ["classes"]
+        }),
 
 
 
@@ -67,5 +116,13 @@ export const userApi = createApi({
 
 export const {
     useSignupMutation,
-    useWhoAmiQuery
+    useWhoAmiQuery,
+    useLazyAllClassesQuery,
+    useLazyWhoAmiQuery,
+    useAllMembersQuery, 
+    useAllTrainersQuery,
+    useAllEquipmentsQuery, 
+    useMaintainanceEquipmentsQuery, 
+    useMembershipPlansQuery, 
+    useMembershipSubscribersQuery
 } = userApi;

@@ -17,7 +17,6 @@ interface StateInterface {
         emergencyContact: string;
         emergencyPhone: string;
 
-
     }
 }
 const initialState: StateInterface = {
@@ -25,7 +24,7 @@ const initialState: StateInterface = {
         id: "",
         firstName: "",
         lastName: "",
-        email: "asdf",
+        email: "",
         isAdmin: false,
         phone: "",
         profilePicture: "",

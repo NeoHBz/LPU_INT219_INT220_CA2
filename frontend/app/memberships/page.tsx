@@ -25,7 +25,7 @@ export default function MembershipsPage() {
         <TabsList>
           <TabsTrigger value="plans">Membership Plans</TabsTrigger>
           <TabsTrigger value="members">Member Subscriptions</TabsTrigger>
-          <TabsTrigger value="renewals">Upcoming Renewals</TabsTrigger>
+          {/* <TabsTrigger value="renewals">Upcoming Renewals</TabsTrigger> */}
         </TabsList>
         <TabsContent value="plans" className="space-y-4">
           <Card>
@@ -59,7 +59,7 @@ export default function MembershipsPage() {
             </CardContent>
           </Card>
         </TabsContent>
-        <TabsContent value="renewals" className="space-y-4">
+        {/* <TabsContent value="renewals" className="space-y-4">
           <Card>
             <CardHeader>
               <CardTitle>Upcoming Renewals</CardTitle>
@@ -71,7 +71,7 @@ export default function MembershipsPage() {
               </div>
             </CardContent>
           </Card>
-        </TabsContent>
+        </TabsContent> */}
       </Tabs>
     </div>
   )

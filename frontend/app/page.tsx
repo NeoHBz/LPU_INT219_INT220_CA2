@@ -12,16 +12,16 @@ import { useDispatch } from "react-redux"
 import { setUserInformation } from "@/lib/userSlice"
 
 export default function Home() {
-    const { data, error, isLoading } = useWhoAmiQuery("");
-    const dispatch = useDispatch();
-    useEffect(() => {
+    // const { data, error, isLoading } = useWhoAmiQuery("");
+    // const dispatch = useDispatch();
+    // useEffect(() => {
 
-        if (data) {
-            dispatch(setUserInformation(data));
-        }
+    //     if (data) {
+    //         dispatch(setUserInformation(data));
+    //     }
 
-    }, [data])
-    if (isLoading) return <Loading />;
+    // }, [data])
+    // if (isLoading) return <Loading />;
 
     return (
         <>
