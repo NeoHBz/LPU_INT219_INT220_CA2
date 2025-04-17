@@ -9,46 +9,38 @@ export const userApi = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl,
         credentials: "include",
-        // async prepareHeaders(headers: Headers) {
-        //     try {
-        //         const { visitorId, brand } = (await getVisitorId()) || {
-        //             visitorId: undefined,
-        //             brand: null,
-        //         };
-        //         if (visitorId && brand) {
-        //             headers.set("visitorId", visitorId);
-        //             headers.set("brand", brand);
-        //         }
-        //         let accessToken = await AsyncStorage.getItem("accessToken");
-        //         let refreshToken = await AsyncStorage.getItem("refreshToken");
-        //         if (refreshToken) {
-        //             headers.set("refreshToken", refreshToken);
-        //         }
-        //         if (accessToken) {
-        //             headers.set("accessToken", accessToken);
-        //         }
-        //     } catch (error: any) {}
-        // },
+        async prepareHeaders(headers: Headers) {
+            try {
+                const token = localStorage.getItem("token");
+                console.log("token", `Bearer ${token}`);
+
+                if (token) {
+                    headers.set("Authorization", `Bearer ${token}`);
+                }
+            } catch (error: any) {
+                console.error("Error getting token", error);
+            }
+        },
     }),
     tagTypes: ["refresh", "userInfo", "classes"],
     endpoints: (builder) => ({
-        signup: builder.mutation({
+        signUp: builder.mutation({
             query: (Credentials) => ({
                 url: "/auth/signUp",
                 method: "POST",
                 body: { ...Credentials },
             }),
         }),
-        signIn: builder.mutation({
+        logIn: builder.mutation({
             query: (Credentials) => ({
-                url: "/auth/signIn",
+                url: "/user/login",
                 method: "POST",
                 body: { ...Credentials },
             }),
         }),
         whoAmi: builder.query({
             query: () => ({
-                url: "/me",
+                url: "/user/me",
                 method: "GET",
             }),
             providesTags: ["refresh", "userInfo"],
@@ -75,7 +67,7 @@ export const userApi = createApi({
         }),
         allTrainers: builder.query({
             query: () => ({
-                url: "/allTrainers",
+                url: "/trainers",
                 method: "GET",
             }),
             providesTags: ["classes"]
@@ -122,7 +114,7 @@ export const userApi = createApi({
 });
 
 export const {
-    useSignupMutation,
+    useSignUpMutation,
     useWhoAmiQuery,
     useLazyAllClassesQuery,
     useLazyWhoAmiQuery,
@@ -132,5 +124,5 @@ export const {
     useMaintainanceEquipmentsQuery, 
     useMembershipPlansQuery, 
     useMembershipSubscribersQuery,
-    useSignInMutation
+    useLogInMutation
 } = userApi;

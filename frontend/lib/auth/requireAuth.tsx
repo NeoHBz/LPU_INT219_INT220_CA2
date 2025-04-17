@@ -29,12 +29,15 @@ export default function RequireAuth({
     const router = useRouter();
     const userInfo = useSelector(selectUserInformation);
     const [loading, setLoading] = useState(true);
-    const [whoAmI, { data: userData, isError, isLoading }] = useLazyWhoAmiQuery();
+    const [whoAmI, { data: userData, error, isLoading }] = useLazyWhoAmiQuery();
     const dispacth = useDispatch();
-    
-
+    useEffect(() => {
+        console.log(userData, error, isLoading)
+    }, [userData, error, isLoading]);
     useEffect(() => {
         const routeInfo = allRoutes.find((r) => r.href === page);
+
+        console.log("userInfo", userData);
         if (userInfo.email.length < 2) {
             whoAmI("");
         }

@@ -6,16 +6,16 @@ interface StateInterface {
         lastName: string;
         email: string;
         isAdmin: boolean;
-        phone: string;
+        phone_number: string;
         profilePicture?: string;
         address: string;
-        city: string;
-        state: string;
-        zipCode: string;
-        fitnessGoals: string;
-        healthConditions: string;
-        emergencyContact: string;
-        emergencyPhone: string;
+        city?: string;
+        state?: string;
+        zipCode?: string;
+        fitnessGoals?: string;
+        healthConditions?: string;
+        emergencyContact?: string;
+        emergencyPhone?: string;
 
     }
 }
@@ -26,7 +26,7 @@ const initialState: StateInterface = {
         lastName: "",
         email: "",
         isAdmin: false,
-        phone: "",
+        phone_number: "",
         profilePicture: "",
         address: "",
         city: "",
@@ -46,10 +46,10 @@ const fitnessCenterData = createSlice({
         setUserInformation: (
             state: StateInterface,
             action: {
-                payload: Pick<StateInterface, "userInfo">;
+                payload: any;
             },
         ) => {
-            state.userInfo = action.payload.userInfo;
+            state.userInfo = action.payload;
         },
 
     },

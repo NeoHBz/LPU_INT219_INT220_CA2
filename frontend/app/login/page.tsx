@@ -68,76 +68,85 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
-import { useSignInMutation } from "@/lib/user"
+import { useLogInMutation } from "@/lib/user"
+import { useDispatch } from "react-redux"
+import { setUserInformation } from "@/lib/userSlice"
 
 export default function LoginPage() {
     const router = useRouter();
-    const [signIn, { data, isLoading, error }] = useSignInMutation();
+    const [signIn, { data, isLoading, error }] = useLogInMutation();
+    const dispatch = useDispatch();
+
     const [formData, setFormData] = useState({
-        email: "",
-        password: "",
+        email: "saurav@fit.com",
+        password: "sekurepass",
         remember: false
     });
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        // try {
+
         signIn(formData);
-        // if (response.data) {
-        //     router.push('/profile');
-        // }
-        // } catch (err) {
-        //     console.error(err);
-        // }
     };
     useEffect(() => {
         if (data && !error) {
-            router.push("/classes");
-            //  dispatch user information 
+            const token = data.data.token;
+            if (token) {
+                localStorage.setItem("token", token);
+                dispatch(setUserInformation(data.data.user));
+                router.push("/classes");
+            }
+            else {
+                console.log("didn't get token");
+            }
         }
 
     }, [data, isLoading, error])
 
 
+
+
     return (
         <div className="flex min-h-screen items-center justify-center bg-gradient-to-r from-blue-600 to-indigo-700 p-4">
-            <Card className="mx-auto max-w-sm">
-                <CardHeader className="space-y-1 text-center">
+            <Card className="mx-auto max-w-md w-full">
+                <CardHeader className="space-y-3 text-center pb-6">
                     <div className="flex justify-center mb-2">
-                        <Dumbbell className="h-10 w-10 text-blue-600" />
+                        <Dumbbell className="h-8 w-8 text-blue-600" />
                     </div>
                     <CardTitle className="text-2xl font-bold">FitTrack Pro</CardTitle>
-                    <CardDescription>Enter your credentials to access your account</CardDescription>
+                    <CardDescription className="text-sm">Enter your credentials to access your account</CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-4">
-                    <form onSubmit={handleSubmit}>
+                <CardContent>
+                    <form onSubmit={handleSubmit} className="space-y-5">
                         <div className="space-y-2">
-                            <Label htmlFor="email">Email</Label>
+                            <Label htmlFor="email" className="text-sm font-medium">Email</Label>
                             <Input
                                 id="email"
                                 type="email"
-                                placeholder="m@example.com"
+                                placeholder="hello@gmail.com"
                                 required
+                                className="h-10"
                                 value={formData.email}
                                 onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
                             />
                         </div>
                         <div className="space-y-2">
                             <div className="flex items-center justify-between">
-                                <Label htmlFor="password">Password</Label>
-                                <Link href="/forgot-password" className="text-sm text-blue-600 hover:underline">
+                                <Label htmlFor="password" className="text-sm font-medium">Password</Label>
+                                <Link href="/forgot-password" className="text-sm text-blue-600 hover:text-blue-800">
                                     Forgot password?
                                 </Link>
                             </div>
                             <Input
                                 id="password"
                                 type="password"
+                                className="h-10"
                                 required
                                 value={formData.password}
                                 onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
                             />
                         </div>
-                        <div className="flex items-center space-x-2">
+                        <div className="flex items-center space-x-2 pt-1">
                             <Checkbox
                                 id="remember"
                                 checked={formData.remember}
@@ -147,22 +156,27 @@ export default function LoginPage() {
                                 Remember me
                             </Label>
                         </div>
-                        {error && <p className="text-red-500 text-sm mt-2">Invalid credentials</p>}
-                        <CardFooter className="flex flex-col space-y-4 px-0">
-                            <Button className="w-full" type="submit" disabled={isLoading}>
-                                {isLoading ? "Signing in..." : "Sign In"}
-                            </Button>
-                            <div className="text-center text-sm">
-                                Don't have an account?{" "}
-                                <Link href="/register" className="text-blue-600 hover:underline">
-                                    Sign up
-                                </Link>
-                            </div>
-                        </CardFooter>
+
+                        {error && <p className="text-red-500 text-sm">Invalid credentials</p>}
+
+                        <Button className="w-full h-10 mt-2" type="submit" disabled={isLoading}>
+                            {isLoading ? "Signing in..." : "Sign In"}
+                        </Button>
                     </form>
                 </CardContent>
+                <CardFooter className="flex justify-center pt-2 pb-6">
+                    <div className="text-center text-sm">
+                        Don't have an account?{" "}
+                        <Link href="/register" className="text-blue-600 hover:text-blue-800 font-medium">
+                            Sign up
+                        </Link>
+                    </div>
+                </CardFooter>
             </Card>
         </div>
     );
 }
 
+
+
+// http://141.148.194.201:9876
