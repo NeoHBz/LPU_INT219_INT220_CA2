@@ -92,7 +92,7 @@ CREATE TABLE
         class_name VARCHAR(100) NOT NULL,
         class_type_id INT NOT NULL,
         instructor_id INT NOT NULL,
-        capacity INT NOT NULL,
+        max_capacity INT NOT NULL,
         description TEXT,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP,
