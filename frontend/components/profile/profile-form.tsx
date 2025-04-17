@@ -9,8 +9,12 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { useSelector } from "react-redux"
+import { selectUserInformation } from "@/lib/userSlice"
+import { useEffect } from "react"
 
 const profileFormSchema = z.object({
+    id: z.string().optional(),
   firstName: z.string().min(2, {
     message: "First name must be at least 2 characters.",
   }),
@@ -47,22 +51,11 @@ const profileFormSchema = z.object({
 
 type ProfileFormValues = z.infer<typeof profileFormSchema>
 
-const defaultValues: Partial<ProfileFormValues> = {
-  firstName: "John",
-  lastName: "Smith",
-  email: "john.smith@example.com",
-  phone: "(555) 123-4567",
-  address: "123 Main St",
-  city: "Anytown",
-  state: "CA",
-  zipCode: "12345",
-  emergencyContact: "Jane Smith",
-  emergencyPhone: "(555) 987-6543",
-  fitnessGoals: "Weight loss, strength training",
-  healthConditions: "None",
-}
 
 export function ProfileForm() {
+    const userInformation = useSelector(selectUserInformation);
+    let defaultValues: Partial<ProfileFormValues> = userInformation;
+
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
     defaultValues,

@@ -38,7 +38,7 @@ export default function EquipmentPage() {
         <TabsList>
           <TabsTrigger value="inventory">Inventory</TabsTrigger>
           <TabsTrigger value="maintenance">Maintenance</TabsTrigger>
-          <TabsTrigger value="usage">Usage Analytics</TabsTrigger>
+          {/* <TabsTrigger value="usage">Usage Analytics</TabsTrigger> */}
         </TabsList>
         <TabsContent value="inventory" className="space-y-4">
           <Card>
@@ -139,7 +139,7 @@ export default function EquipmentPage() {
             </CardContent>
           </Card>
         </TabsContent>
-        <TabsContent value="usage" className="space-y-4">
+        {/* <TabsContent value="usage" className="space-y-4">
           <Card>
             <CardHeader>
               <CardTitle>Equipment Usage Analytics</CardTitle>
@@ -151,7 +151,7 @@ export default function EquipmentPage() {
               </div>
             </CardContent>
           </Card>
-        </TabsContent>
+        </TabsContent> */}
       </Tabs>
     </div>
   )

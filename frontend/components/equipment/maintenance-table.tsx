@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { ArrowUpDown, CheckCircle, Clock, MoreHorizontal, Wrench, XCircle } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -14,117 +14,22 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
+import { MaintainaceEquipmentType } from "@/types/Equipments"
+import { useMaintainanceEquipmentsQuery } from "@/lib/user"
 
-// Sample data
-const maintenanceRecords = [
-  {
-    id: "M001",
-    equipmentId: "EQ001",
-    equipmentName: "Treadmill",
-    type: "Routine",
-    scheduledDate: "Sep 10, 2023",
-    technician: "John Davis",
-    status: "Scheduled",
-    notes: "Regular maintenance check",
-  },
-  {
-    id: "M002",
-    equipmentId: "EQ003",
-    equipmentName: "Bench Press",
-    type: "Repair",
-    scheduledDate: "May 20, 2023",
-    completedDate: "May 20, 2023",
-    technician: "Mike Wilson",
-    status: "Completed",
-    notes: "Fixed loose bolts and adjusted seat",
-  },
-  {
-    id: "M003",
-    equipmentId: "EQ005",
-    equipmentName: "Rowing Machine",
-    type: "Emergency",
-    scheduledDate: "Jul 30, 2023",
-    completedDate: "Jul 30, 2023",
-    technician: "Sarah Johnson",
-    status: "Completed",
-    notes: "Replaced broken display and calibrated resistance",
-  },
-  {
-    id: "M004",
-    equipmentId: "EQ008",
-    equipmentName: "Cable Machine",
-    type: "Routine",
-    scheduledDate: "Oct 15, 2023",
-    technician: "John Davis",
-    status: "In Progress",
-    notes: "Regular maintenance check",
-  },
-  {
-    id: "M005",
-    equipmentId: "EQ002",
-    equipmentName: "Elliptical",
-    type: "Routine",
-    scheduledDate: "Oct 15, 2023",
-    technician: "Mike Wilson",
-    status: "Scheduled",
-    notes: "Regular maintenance check",
-  },
-  {
-    id: "M006",
-    equipmentId: "EQ004",
-    equipmentName: "Leg Press",
-    type: "Routine",
-    scheduledDate: "Dec 25, 2023",
-    technician: "Sarah Johnson",
-    status: "Scheduled",
-    notes: "Regular maintenance check",
-  },
-  {
-    id: "M007",
-    equipmentId: "EQ006",
-    equipmentName: "Stationary Bike",
-    type: "Repair",
-    scheduledDate: "Aug 5, 2023",
-    completedDate: "Aug 5, 2023",
-    technician: "John Davis",
-    status: "Completed",
-    notes: "Fixed resistance knob and replaced pedal straps",
-  },
-  {
-    id: "M008",
-    equipmentId: "EQ007",
-    equipmentName: "Smith Machine",
-    type: "Routine",
-    scheduledDate: "Mar 10, 2024",
-    technician: "Mike Wilson",
-    status: "Scheduled",
-    notes: "Regular maintenance check",
-  },
-  {
-    id: "M009",
-    equipmentId: "EQ009",
-    equipmentName: "Stair Climber",
-    type: "Routine",
-    scheduledDate: "May 20, 2024",
-    technician: "Sarah Johnson",
-    status: "Scheduled",
-    notes: "Regular maintenance check",
-  },
-  {
-    id: "M010",
-    equipmentId: "EQ010",
-    equipmentName: "Dumbbells Set",
-    type: "Inspection",
-    scheduledDate: "Jun 25, 2024",
-    technician: "John Davis",
-    status: "Scheduled",
-    notes: "Check for damage and wear",
-  },
-]
+
 
 export function MaintenanceTable() {
-  const [sortColumn, setSortColumn] = useState<string>("scheduledDate")
-  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc")
+    const [sortColumn, setSortColumn] = useState<string>("scheduledDate");
+    const [maintenanceRecords, setMaintenanceRecords] = useState<MaintainaceEquipmentType[]>([]);
+    const { data: maintainanceEquipment } = useMaintainanceEquipmentsQuery("");
+    const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc")
+    useEffect(() => {
+        if (maintainanceEquipment && maintainanceEquipment.length > 0) {
+            setMaintenanceRecords(maintainanceEquipment);
+        }
+    }, [maintainanceEquipment])
+    
 
   const toggleSort = (column: string) => {
     if (sortColumn === column) {
@@ -189,7 +94,8 @@ export function MaintenanceTable() {
                 <div className="text-sm text-muted-foreground">{record.equipmentId}</div>
               </TableCell>
               <TableCell>
-                <Badge
+                      <Badge
+                        //   @ts-ignore
                   variant={
                     record.type === "Routine"
                       ? "outline"
