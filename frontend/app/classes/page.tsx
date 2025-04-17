@@ -21,7 +21,7 @@ export default function ClassesPage() {
     <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
       <div className="flex items-center justify-between space-y-2">
         <h2 className="text-3xl font-bold tracking-tight">Classes</h2>
-              {isAdmin ? <div className="flex items-center space-x-2">
+              {true ? <div className="flex items-center space-x-2">
           <Link
             href="/classes/new"
             className="inline-flex h-9 items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow hover:bg-primary/90"
@@ -33,9 +33,9 @@ export default function ClassesPage() {
       </div>
       <Tabs defaultValue="all" className="space-y-4">
         <div className="flex justify-between">
-          <TabsList>
+                  <TabsList>
             <TabsTrigger value="all">All Classes</TabsTrigger>
-            <TabsTrigger value="upcoming">Upcoming</TabsTrigger>
+                      <TabsTrigger value="upcoming">Upcoming</TabsTrigger>
             <TabsTrigger value="popular">Popular</TabsTrigger>
             <TabsTrigger value="new">New</TabsTrigger>
           </TabsList>

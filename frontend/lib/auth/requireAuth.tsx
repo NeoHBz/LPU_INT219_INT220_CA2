@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useSelector } from "react-redux";
-import { selectUserInformation } from "@/lib/userSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { selectUserInformation, setUserInformation } from "@/lib/userSlice";
 import { useLazyWhoAmiQuery } from "@/lib/user";
 
 
@@ -29,26 +29,28 @@ export default function RequireAuth({
     const router = useRouter();
     const userInfo = useSelector(selectUserInformation);
     const [loading, setLoading] = useState(true);
-    const [whoAmI, { data:userData,isError,isLoading}]  = useLazyWhoAmiQuery();
+    const [whoAmI, { data: userData, isError, isLoading }] = useLazyWhoAmiQuery();
+    const dispacth = useDispatch();
     
 
     useEffect(() => {
         const routeInfo = allRoutes.find((r) => r.href === page);
         if (userInfo.email.length < 2) {
-            console.log("i think someone is smaller than two.")
             whoAmI("");
         }
-
-        if (!userInfo?.email) {
+        if (userData && userData.length > 0) {
+            dispacth(setUserInformation(userData))
+        }
+        if (!userInfo?.email && !isLoading) {
             router.push("/login");
-        } else if (routeInfo?.adminOnly && !userInfo.isAdmin) {
+        } else if (routeInfo?.adminOnly && !userInfo.isAdmin && !isLoading) {
 
             router.push("/unauthorized");
         }
         else {
             setLoading(false);  // Set loading to false once check is done
         }
-    }, [userInfo, router, page]);
+    }, [userInfo, router, page, userData]);
     if (loading) {
         return null;
     }

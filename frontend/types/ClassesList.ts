@@ -1,9 +1,9 @@
-import { Trainer } from "@/types/Trainer";
+import { TrainerType } from "@/types/Trainer";
 
 export interface ClassesList{
     id: string;
     name: string;
-    trainer: Pick<Trainer, "id" | "name" | "image">;
+    trainer: Pick<TrainerType, "id" | "name" | "image">;
     type: string;
     schedule: string[];
     time: string;
