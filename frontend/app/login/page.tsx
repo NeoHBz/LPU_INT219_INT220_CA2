@@ -94,7 +94,7 @@ export default function LoginPage() {
             if (token) {
                 localStorage.setItem("token", token);
                 dispatch(setUserInformation(data.data.user));
-                router.push("/classes");
+                router.push("/dashboard");
             }
             else {
                 console.log("didn't get token");

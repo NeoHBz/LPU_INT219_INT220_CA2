@@ -28,15 +28,30 @@ export function ClassesTable() {
     const [sortColumn, setSortColumn] = useState<string>("name")
     const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc")
     const isAdmin = useSelector(selectIsUserAdmin);
-    const [getClasses, { data: classesOfUser, isError, isLoading }] = useLazyAllClassesQuery();
+    const [getClasses, { data: classesOfUser, isError, error, isLoading }] = useLazyAllClassesQuery();
     useEffect(() => {
         if (isAdmin) {
             getClasses("");
         }
     }, [isAdmin])
     useEffect(() => {
+
         if (classesOfUser) {
-            setClasses(classesOfUser)
+            // console.log(classesOfUser);
+            // const transformedResponse = classesOfUser.data.schedule.map((item: any) => {
+            //     const schedule = item.schedule.map((scheduleItem: any) => {
+            //         return scheduleItem.day_of_week.toLowerCase().substring(0, 3);
+            //     });
+            //     return { ...item, schedule: schedule.join(", ") };
+            // });
+            // console.log(transformedResponse);
+            const transformedResponse = classesOfUser.data.map((item: any) => {
+                const schedule = item.schedule.map((scheduleItem: any) => {
+                    return scheduleItem.day_of_week.toLowerCase().substring(0, 3);
+                });
+                return { ...item, schedule: schedule.join(", "), time: item.schedule[0].start_time };
+            });
+            setClasses(transformedResponse);
         }
     }, [classesOfUser, isError, isLoading])
 
@@ -132,12 +147,12 @@ export function ClassesTable() {
                                 <Checkbox
                                     checked={selectedClasses.includes(classItem.id)}
                                     onCheckedChange={() => toggleSelectClass(classItem.id)}
-                                    aria-label={`Select ${classItem.name}`}
+                                    aria-label={`Select ${classItem.class_name}`}
                                 />
                             </TableCell>
                             <TableCell className="font-medium">{classItem.id}</TableCell>
                             <TableCell>
-                                <div className="font-medium">{classItem.name}</div>
+                                <div className="font-medium">{classItem.class_name}</div>
                                 <div className="text-sm text-muted-foreground md:hidden">{classItem.type}</div>
                             </TableCell>
                             <TableCell className="hidden md:table-cell">
@@ -157,14 +172,14 @@ export function ClassesTable() {
                             <TableCell>
                                 <Badge
                                     variant={
-                                        classItem.enrolled === classItem.capacity
+                                        classItem.enrolled === classItem.max_capacity
                                             ? "destructive"
-                                            : classItem.enrolled / classItem.capacity > 0.8
+                                            : classItem.enrolled / classItem.max_capacity > 0.8
                                                 ? "outline"
                                                 : "default"
                                     }
                                 >
-                                    {classItem.enrolled}/{classItem.capacity}
+                                    {classItem.enrolled}/{classItem.max_capacity}
                                 </Badge>
                             </TableCell>
                             <TableCell>

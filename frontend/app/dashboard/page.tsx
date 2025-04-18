@@ -12,40 +12,40 @@ import { useEffect, useState } from "react"
 import { Dashboard } from "@/types/Dashboard"
 
 export default function DashboardPage() {
-    const [totalMembers, setTotalMembers] = useState(0)
-    const [activeClasses, setActiveClasses] = useState(0)
-    const [revenue, setRevenue] = useState(0)
-    const [activeTrainers, setActiveTrainers] = useState(0)
-    const [newTrainers, setNewTrainers] = useState(0);
+    const [totalMembers, setTotalMembers] = useState(1248)
+    const [activeClasses, setActiveClasses] = useState(42)
+    const [revenue, setRevenue] = useState(24563)
+    const [activeTrainers, setActiveTrainers] = useState(15)
+    const [newTrainers, setNewTrainers] = useState(5);
   
-    const fetchData = async () => {
-        try {
-            const [res1] = await Promise.all([
-                fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/dashboard`),
-            ]);
-            const [data1] = await Promise.all([
-                res1.json() as Promise<Dashboard>,
-            ])
+    // const fetchData = async () => {
+    //     try {
+    //         const [res1] = await Promise.all([
+    //             fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/dashboard`),
+    //         ]);
+    //         const [data1] = await Promise.all([
+    //             res1.json() as Promise<Dashboard>,
+    //         ])
             
-            setTotalMembers(+data1.totalMembers);
-            setActiveClasses(+data1.activeClasses);
-            setRevenue(+data1.revenue);
-            setActiveTrainers(+data1.activeTrainers);
-            setNewTrainers(+data1.newTrainers);
-        }
-        catch (error) {
-            if (error instanceof Error) {
-                console.error('API calls failed:', error.message);
-                return;
-            }
-        }
-    }
+    //         setTotalMembers(+data1.totalMembers);
+    //         setActiveClasses(+data1.activeClasses);
+    //         setRevenue(+data1.revenue);
+    //         setActiveTrainers(+data1.activeTrainers);
+    //         setNewTrainers(+data1.newTrainers);
+    //     }
+    //     catch (error) {
+    //         if (error instanceof Error) {
+    //             console.error('API calls failed:', error.message);
+    //             return;
+    //         }
+    //     }
+    // }
 
 
     
-      useEffect(() => {
-          fetchData();
-      }, [])
+    //   useEffect(() => {
+    //       fetchData();
+    //   }, [])
       
     
     
@@ -55,13 +55,13 @@ export default function DashboardPage() {
       <div className="flex items-center justify-between space-y-2">
         <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
         <div className="flex items-center space-x-2">
-          <Link
+          {/* <Link
             href="/members/new"
             className="inline-flex h-9 items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow hover:bg-primary/90"
           >
             <UserPlus className="mr-2 h-4 w-4" />
             Add Member
-          </Link>
+          </Link> */}
         </div>
       </div>
       <Tabs defaultValue="overview" className="space-y-4">
@@ -174,97 +174,7 @@ export default function DashboardPage() {
             </Card>
           </div>
         </TabsContent>
-        {/* <TabsContent value="analytics" className="space-y-4">
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
-                  Peak Hours
-                </CardTitle>
-                <Clock className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">5PM - 8PM</div>
-                <p className="text-xs text-muted-foreground">
-                  Average of 85 members
-                </p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
-                  Member Retention
-                </CardTitle>
-                <TrendingUp className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">87%</div>
-                <p className="text-xs text-muted-foreground">
-                  +2% from last quarter
-                </p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
-                  Equipment Usage
-                </CardTitle>
-                <BarChart3 className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">76%</div>
-                <p className="text-xs text-muted-foreground">
-                  Most used: Treadmills
-                </p>
-              </CardContent>
-            </Card>
-          </div>
-          <Card className="col-span-4">
-            <CardHeader>
-              <CardTitle>Analytics Dashboard</CardTitle>
-              <CardDescription>
-                Detailed analytics will be displayed here
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="h-[400px] flex items-center justify-center border rounded-md">
-                <p className="text-muted-foreground">
-                  Advanced analytics charts and data will be displayed here
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent> */}
-        {/* <TabsContent value="reports" className="space-y-4">
-          <Card className="col-span-4">
-            <CardHeader>
-              <CardTitle>Reports</CardTitle>
-              <CardDescription>Generate and view reports</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="h-[400px] flex items-center justify-center border rounded-md">
-                <p className="text-muted-foreground">
-                  Reports interface will be displayed here
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent> */}
-        {/* <TabsContent value="notifications" className="space-y-4">
-          <Card className="col-span-4">
-            <CardHeader>
-              <CardTitle>Notifications</CardTitle>
-              <CardDescription>System notifications and alerts</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="h-[400px] flex items-center justify-center border rounded-md">
-                <p className="text-muted-foreground">
-                  Notifications will be displayed here
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent> */}
+        
       </Tabs>
     </div>
   );

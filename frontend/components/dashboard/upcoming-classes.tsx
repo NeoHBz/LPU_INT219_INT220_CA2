@@ -1,5 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
+import { useLazyAllClassesQuery } from "@/lib/user";
 import type { UpcomingClasses } from "@/types/UpcomingClasses"
 import { useEffect, useState } from "react"
 
@@ -78,8 +79,9 @@ import { useEffect, useState } from "react"
 
 export function UpcomingClasses() {
     const [classes, setClasses] = useState<UpcomingClasses[]>([]);
+    // const [getClasses, { data: classesOfUser, isError, error, isLoading }] = useLazyAllClassesQuery();
     useEffect(() => {
-        fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/upcoming-classes`, {
+        fetch(`http://localhost:9876/api/upcoming-classes`, {
             method: "GET"
         }).then((res) => res.json()).then((data) =>  setClasses(data) );
     }, [])

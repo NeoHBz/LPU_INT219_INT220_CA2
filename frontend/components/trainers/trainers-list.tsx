@@ -15,8 +15,8 @@ export function TrainersList() {
     const [trainers, setTrainers] = useState<TrainerType[]>([]);
     const { data: trainerData } = useAllTrainersQuery("");
     useEffect(() => {
-        if (trainerData && trainerData.length > 0) {
-            setTrainers(trainerData);
+        if (trainerData) {
+            setTrainers(trainerData.data);
         }
     }, [trainerData])
     
@@ -50,7 +50,7 @@ export function TrainersList() {
             </div>
             <div className="mt-3 space-y-1">
               <div className="flex flex-wrap gap-1">
-                {trainer.specialties.map((specialty) => (
+                          {trainer.specialities.map((specialty) => (
                   <Badge key={specialty} variant="secondary" className="text-xs">
                     {specialty}
                   </Badge>
@@ -59,12 +59,14 @@ export function TrainersList() {
               <p className="line-clamp-2 text-sm text-muted-foreground mt-2">{trainer.bio}</p>
               <div className="mt-2 text-sm">
                 <div className="flex items-center gap-1">
-                  <Mail className="h-3 w-3 text-muted-foreground" />
-                  <span className="text-xs text-muted-foreground">{trainer.email}</span>
+                              <Mail className="h-3 w-3 text-muted-foreground" />
+                              {/* @ts-ignore*/}
+                              <span className="text-xs text-muted-foreground">{trainer.user.email}</span>
                 </div>
                 <div className="flex items-center gap-1">
                   <Phone className="h-3 w-3 text-muted-foreground" />
-                  <span className="text-xs text-muted-foreground">{trainer.phone}</span>
+                              {/* @ts-ignore*/}
+                              <span className="text-xs text-muted-foreground">{trainer.user.phone_number}</span>
                 </div>
               </div>
             </div>

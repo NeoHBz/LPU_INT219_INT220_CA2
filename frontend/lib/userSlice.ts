@@ -2,8 +2,8 @@ import { createSelector, createSlice } from "@reduxjs/toolkit";
 interface StateInterface {
     userInfo: {
         id: string;
-        firstName: string;
-        lastName: string;
+        first_name: string;
+        last_name: string;
         email: string;
         isAdmin: boolean;
         phone_number: string;
@@ -22,8 +22,8 @@ interface StateInterface {
 const initialState: StateInterface = {
     userInfo: {
         id: "",
-        firstName: "",
-        lastName: "",
+        first_name: "",
+        last_name: "",
         email: "",
         isAdmin: false,
         phone_number: "",

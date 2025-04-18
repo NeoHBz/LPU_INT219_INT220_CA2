@@ -7,7 +7,7 @@ import { useEffect, useState } from "react"
 export function RecentActivities() {
     const [activities, setActivities] = useState<recentActivities[]>([])
     useEffect(() => {
-        fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/recent-activities`, {
+        fetch(`http://localhost:9876/api/recent-activities`, {
             method: "GET"
         }).then((res) => res.json()).then((data) => {
             setActivities(data)

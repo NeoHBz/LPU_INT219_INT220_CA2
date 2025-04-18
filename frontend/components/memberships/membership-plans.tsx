@@ -19,15 +19,21 @@ import { useMembershipPlansQuery } from "@/lib/user"
 
 
 
-export function MembershipPlans() {
+export function MembershipPlans() { 
     const [plans, setPlans] = useState<MembershipPlansType[]>([]);
-    const { data: allMemberships } = useMembershipPlansQuery("");
     useEffect(() => {
-        if (allMemberships && allMemberships.length > 0) {
-            setPlans(allMemberships);
-      }
-    }, [allMemberships])
-    
+        fetch(`http://localhost:9876/api/membershipPlans`).then((res) => res.json()).then((data) => {
+            setPlans(data)
+
+        })
+    }, [])
+    // const { data: allMemberships } = useMembershipPlansQuery("");
+    // useEffect(() => {
+    //     if (allMemberships && allMemberships.length > 0) {
+    //         setPlans(allMemberships);
+    //   }
+    // }, [allMemberships])
+
   return (
     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
       {plans.map((plan) => (

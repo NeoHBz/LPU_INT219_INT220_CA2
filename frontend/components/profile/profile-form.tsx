@@ -15,16 +15,16 @@ import { useEffect } from "react"
 
 const profileFormSchema = z.object({
     id: z.string().optional(),
-  firstName: z.string().min(2, {
+    first_name: z.string().min(2, {
     message: "First name must be at least 2 characters.",
   }),
-  lastName: z.string().min(2, {
+    last_name: z.string().min(2, {
     message: "Last name must be at least 2 characters.",
   }),
   email: z.string().email({
     message: "Please enter a valid email address.",
   }),
-  phone: z.string().min(10, {
+    phone_number: z.string().min(10, {
     message: "Phone number must be at least 10 characters.",
   }),
   address: z.string().min(5, {
@@ -71,12 +71,12 @@ export function ProfileForm() {
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <FormField
             control={form.control}
-            name="firstName"
+                      name="first_name"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>First Name</FormLabel>
-                <FormControl>
-                  <Input {...field} />
+                    <FormControl>
+                        <Input {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -84,7 +84,7 @@ export function ProfileForm() {
           />
           <FormField
             control={form.control}
-            name="lastName"
+                      name="last_name"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Last Name</FormLabel>
@@ -112,7 +112,7 @@ export function ProfileForm() {
           />
           <FormField
             control={form.control}
-            name="phone"
+                      name="phone_number"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Phone</FormLabel>

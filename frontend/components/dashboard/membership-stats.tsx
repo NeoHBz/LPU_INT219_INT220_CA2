@@ -8,7 +8,7 @@ export function MembershipStats() {
     const [data, setData] = useState<membershipStats[]>([])
     
     useEffect(() => {
-        fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/membership-stats`).then((res) => res.json()).then((data) => {
+        fetch(`http://localhost:9876/api/membership-stats`).then((res) => res.json()).then((data) => {
             setData(data)
 
         })

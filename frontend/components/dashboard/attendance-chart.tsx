@@ -8,7 +8,7 @@ import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis, Tooltip } from "recha
 export function AttendanceChart() {
     const [data, setData] = useState<Attendance[]>([])
         useEffect(() => {
-            fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/attendance`, {
+            fetch(`http://localhost:9876/api/attendance`, {
                 method: "GET"
             }).then((res) => res.json()).then((data) => { console.log(data); setData(data.attendance) });
       

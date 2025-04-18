@@ -12,10 +12,13 @@ import { PaymentHistory } from "@/components/profile/payment-history"
 import { useSelector } from "react-redux"
 import { selectUserInformation } from "@/lib/userSlice"
 import { useEffect } from "react"
-import { userInfo } from "os"
+
 
 export default function ProfilePage() {
     const userInformation = useSelector(selectUserInformation);
+    useEffect(() => {
+        console.log(userInformation)
+    }, [userInformation])
 
 
 
@@ -40,8 +43,9 @@ export default function ProfilePage() {
                 <AvatarImage src="/placeholder.svg?height=96&width=96" alt="John Smith" />
                 <AvatarFallback>JS</AvatarFallback>
               </Avatar>
-              <div className="text-center">
-                              <h3 className="text-xl font-bold">{userInformation.firstName}  {userInformation.lastName}</h3>
+                          <div className="text-center">
+                              {/* @ts-ignore */}
+                              <h3 className="text-xl font-bold">{userInformation.first_name}  {userInformation.last_name}</h3>
                               <p className="text-sm text-muted-foreground">Member since January 2023  <strong>change it </strong></p>
                 <div className="mt-2 flex justify-center">
                                   <Badge className="mr-1">Premium Member <strong>change it </strong></Badge>
@@ -61,7 +65,7 @@ export default function ProfilePage() {
                     <User className="h-4 w-4 text-muted-foreground" />
                     <span className="text-sm font-medium">Phone</span>
                   </div>
-                                  <span className="text-sm">{userInformation.phone}</span>
+                                  <span className="text-sm">{userInformation.phone_number}</span>
                 </div>
                 <div className="flex items-center justify-between border-b pb-2">
                   <div className="flex items-center space-x-2">

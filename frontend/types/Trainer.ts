@@ -2,7 +2,7 @@ export interface TrainerType{
     id: string;
     name: string;
     image: string;
-    specialties: string[];
+    specialities: string[];
     rating: number;
     reviews: number;
     email: string;

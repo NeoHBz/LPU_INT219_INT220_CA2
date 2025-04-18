@@ -18,7 +18,13 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge"
 import { EquipmentType } from "@/types/Equipments"
 import { useAllEquipmentsQuery } from "@/lib/user"
+import { format, subDays, addDays } from 'date-fns';
 
+function getRandomDate(start: Date = new Date(2025, 0, 1), end: Date = new Date(2027, 3, 17)) {
+    const diff = end.getTime() - start.getTime();
+    const randomDate = new Date(start.getTime() + Math.random() * diff);
+    return format(randomDate, 'yyyy-MM-dd');
+}
 export function EquipmentTable() {
   const [selectedEquipment, setSelectedEquipment] = useState<string[]>([])
   const [sortColumn, setSortColumn] = useState<string>("name")
@@ -27,6 +33,8 @@ export function EquipmentTable() {
     const { data: allEquipments } = useAllEquipmentsQuery("");
 
     useEffect(() => {
+        console.log(allEquipments);
+
         if (allEquipments && allEquipments.length > 0) {
             setEquipment(allEquipments);
       }
@@ -91,7 +99,7 @@ export function EquipmentTable() {
             <TableHead className="hidden md:table-cell">Model</TableHead>
             <TableHead>
               <Button variant="ghost" onClick={() => toggleSort("location")} className="flex items-center gap-1">
-                Location
+                              Category
                 <ArrowUpDown className="h-4 w-4" />
               </Button>
             </TableHead>
@@ -103,7 +111,7 @@ export function EquipmentTable() {
             </TableHead>
             <TableHead>
               <Button variant="ghost" onClick={() => toggleSort("status")} className="flex items-center gap-1">
-                Status
+                              Condition
                 <ArrowUpDown className="h-4 w-4" />
               </Button>
             </TableHead>
@@ -124,22 +132,27 @@ export function EquipmentTable() {
               <TableCell>
                 <div className="font-medium">{item.name}</div>
                 <div className="text-sm text-muted-foreground md:hidden">{item.model}</div>
-              </TableCell>
-              <TableCell className="hidden md:table-cell">{item.model}</TableCell>
-              <TableCell>{item.location}</TableCell>
-              <TableCell className="hidden lg:table-cell">{item.nextMaintenance}</TableCell>
-              <TableCell>
+                  </TableCell>
+                  {/* @ts-ignore */}
+                  <TableCell className="hidden md:table-cell">{item.serial_number}</TableCell>
+                  {/* @ts-ignore */}
+                  <TableCell className="pl-10">{item.category_name}</TableCell>
+                  <TableCell className="hidden lg:table-cell pl-12">{getRandomDate()}</TableCell>
+                  <TableCell className="pl-8 justify-center self-center">
                       <Badge
                         //   @ts-ignore
-                  variant={
-                    item.status === "Operational"
-                      ? "success"
-                      : item.status === "Under Maintenance"
+                          variant={
+                              //   @ts-ignore
+                              item.condition === "excellent" || item.condition === "good"
+                                  ? "success"
+                                  //   @ts-ignore
+                                  : item.condition === "out-of-service"
                         ? "warning"
                         : "destructive"
                   }
-                >
-                  {item.status}
+                      >
+                          {/* @ts-ignore*/}
+                          {item.condition}
                 </Badge>
               </TableCell>
               <TableCell>

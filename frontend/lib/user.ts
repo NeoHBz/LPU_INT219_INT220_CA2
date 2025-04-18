@@ -12,7 +12,7 @@ export const userApi = createApi({
         async prepareHeaders(headers: Headers) {
             try {
                 const token = localStorage.getItem("token");
-                console.log("token", `Bearer ${token}`);
+
 
                 if (token) {
                     headers.set("Authorization", `Bearer ${token}`);
@@ -53,17 +53,20 @@ export const userApi = createApi({
         }),
         allClasses: builder.query({
             query: () => ({
-                url: "/allClasses",
+                url: "/classes",
                 method: "GET",
             }),
-            providesTags: ["classes"]
+            providesTags: ["classes"],
         }),
         allMembers: builder.query({
             query: () => ({
-                url: "/allMembers",
+                url: "/members",
                 method: "GET",
             }),
-            providesTags: ["classes"]
+            providesTags: ["classes"],
+            transformResponse: (response: any) => {
+                return response.data;
+            },
         }),
         allTrainers: builder.query({
             query: () => ({
@@ -74,10 +77,13 @@ export const userApi = createApi({
         }),
         allEquipments: builder.query({
             query: () => ({
-                url: "/allEquipments",
+                url: "/equipment",
                 method: "GET",
             }),
-            providesTags: ["classes"]
+            providesTags: ["classes"],
+            transformResponse: (response: any) => {
+                return response.data;
+            }   
         }),
         maintainanceEquipments: builder.query({
             query: () => ({
@@ -100,16 +106,12 @@ export const userApi = createApi({
             }),
             providesTags: ["classes"]
         }),
-
-
-
-        // getTransaction: builder.query({
-        //     query: (groupId) => ({
-        //         url: `/getTransaction/${groupId}`,
-        //         method: "GET",
-        //     }),
-        //     providesTags: ["globalTypes", "refresh"],
-        // }),
+        dashboard: builder.query({
+            query: () => ({
+                url: "/dashboard",
+                method: "GET",
+            }),
+        }),
     }),
 });
 
@@ -124,5 +126,6 @@ export const {
     useMaintainanceEquipmentsQuery, 
     useMembershipPlansQuery, 
     useMembershipSubscribersQuery,
-    useLogInMutation
+    useLogInMutation,
+    useDashboardQuery
 } = userApi;
