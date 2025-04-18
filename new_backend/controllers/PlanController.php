@@ -23,6 +23,8 @@ class PlanController {
                 'price' => (float) $plan['price'],
                 'duration' => $plan['duration'],
                 'membershipType' => $plan['membership_type'],
+                'description' => $plan['description'],
+                'features' => json_decode($plan['features'], true),
                 'createdAt' => $plan['created_at'],
                 'updatedAt' => $plan['updated_at']
             ];

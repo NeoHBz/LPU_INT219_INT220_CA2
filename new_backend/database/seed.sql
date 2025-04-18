@@ -1,14 +1,49 @@
 USE fitness;
 
--- Existing data
 INSERT INTO `users` (`isAdmin`, `created_at`, `email`, `first_name`, `id`, `last_name`, `password`, `updated_at`, `username`, `phone_number`, `address`) 
 VALUES (TRUE,'2025-04-15 01:26:58', 'saurav@fit.com', 'Saurav', 1, 'Lal', '$2y$12$UhbDi8p44auMmhZjlGWmnucBY5Jia2A85BtDUXkt31fun28tfUK8G', NULL, 'saurav', '1234567890', 'Green Valley, Jalandhar');
 
-INSERT INTO `plans` (`created_at`, `duration`, `id`, `membership_type`, `plan_name`, `price`, `updated_at`)
-VALUES ('2025-04-15 01:26:58', '1 Month', 1, 'basic', 'Basic Plan', 999.00, NULL),
-       ('2025-04-15 01:26:58', '3 Months', 2, 'standard', 'Standard Plan', 2499.00, NULL),
-       ('2025-04-15 01:26:58', '6 Months', 3, 'premium', 'Premium Plan', 4500.00, NULL),
-       ('2025-04-15 01:26:58', '12 Months', 4, 'professional', 'Professional Plan', 8000.00, NULL);
+INSERT INTO `plans` (`plan_name`, `price`, `duration`, `membership_type`, `description`, `features`) VALUES
+('Basic Plan', 999.00, '1 Month', 'basic', 'Entry-level membership with essential fitness facilities access', 
+ JSON_ARRAY(
+    'Standard hours gym access',
+    '1 session per month of personal training',
+    'Basic nutrition guidelines',
+    'Small locker access',
+    'No towel service',
+    'No massage sessions',
+    'No sauna access'
+ )),
+('Standard Plan', 2499.00, '3 Months', 'standard', 'Popular mid-tier membership with extended benefits', 
+ JSON_ARRAY(
+    'Extended hours gym access',
+    '2 sessions per month of personal training',
+    'Personalized nutrition plan',
+    'Medium locker access',
+    'Basic towel service (1 per visit)',
+    '1 massage session per month',
+    'Sauna access included'
+ )),
+('Premium Plan', 4500.00, '6 Months', 'premium', 'Enhanced membership with premium services and amenities', 
+ JSON_ARRAY(
+    '24/7 gym access',
+    '4 sessions per month of personal training',
+    'Advanced nutrition consultation',
+    'Large locker access',
+    'Premium towel service (2 per visit)',
+    '2 massage sessions per month',
+    'Unlimited sauna access'
+ )),
+('Professional Plan', 8000.00, '12 Months', 'professional', 'Complete elite fitness package with all premium services', 
+ JSON_ARRAY(
+    'VIP 24/7 gym access',
+    'Unlimited personal training sessions',
+    'Weekly nutrition consultations',
+    'Dedicated personal locker',
+    'Unlimited premium towel service',
+    '4 massage sessions per month',
+    'Priority sauna access'
+ ));
 
 INSERT INTO members (`created_at`, `expiry_date`, `id`, `plan_id`, `updated_at`, `user_id`)
 VALUES ('2025-04-15 01:26:58', '2025-05-15 01:26:58', 1, 1, NULL, 1);
