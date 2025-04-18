@@ -23,13 +23,15 @@ class PlanController {
                 'price' => (float) $plan['price'],
                 'duration' => $plan['duration'],
                 'membershipType' => $plan['membership_type'],
+                'description' => $plan['description'],
+                'features' => json_decode($plan['features'], true),
                 'createdAt' => $plan['created_at'],
                 'updatedAt' => $plan['updated_at']
             ];
         }, $plans);
         
         return Response::json([
-            'success' => true,
+            'status' => 'success',
             'data' => $transformedPlans
         ]);
     }
@@ -39,7 +41,7 @@ class PlanController {
         
         if (!$plan) {
             return Response::json([
-                'success' => false,
+                'status' => 'error',
                 'message' => 'Plan not found'
             ], 404);
         }
@@ -56,7 +58,7 @@ class PlanController {
         ];
         
         return Response::json([
-            'success' => true,
+            'status' => 'success',
             'data' => $transformedPlan
         ]);
     }

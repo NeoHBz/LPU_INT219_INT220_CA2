@@ -13,6 +13,27 @@ class UserController {
         $this->userModel = new User();
     }
     
+    private function validateAndSanitizeInput($data) {
+        $sanitized = [];
+        
+        if (isset($data['username'])) {
+            $sanitized['username'] = htmlspecialchars($data['username'], ENT_QUOTES, 'UTF-8');
+        }
+        
+        if (isset($data['email'])) {
+            $sanitized['email'] = filter_var($data['email'], FILTER_SANITIZE_EMAIL);
+        }
+
+        if (isset($data['first_name'])) {
+            $sanitized['first_name'] = htmlspecialchars($data['first_name'], ENT_QUOTES, 'UTF-8');
+        }
+        
+        if (isset($data['last_name'])) {
+            $sanitized['last_name'] = htmlspecialchars($data['last_name'], ENT_QUOTES, 'UTF-8');
+        }
+        
+        return array_merge($data, $sanitized);
+    }
     public function login() {
         // Get POST data
         $data = json_decode(file_get_contents('php://input'), true);
@@ -24,7 +45,17 @@ class UserController {
                 'message' => 'Email and password are required'
             ], 400);
         }
-        
+
+        // Sanitize input data
+        $data = $this->validateAndSanitizeInput($data);
+        // Validate email format
+        if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+            return Response::json([
+                'status' => 'error',
+                'message' => 'Invalid email format'
+            ], 400);
+        }
+
         // Find user by email
         $user = $this->userModel->findByEmail($data['email']);
         
@@ -83,6 +114,15 @@ class UserController {
             ], 409);
         }
         
+        // Sanitize input data
+        $data = $this->validateAndSanitizeInput($data);
+        // Validate email format
+        if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+            return Response::json([
+                'status' => 'error',
+                'message' => 'Invalid email format'
+            ], 400);
+        }
         // Create user
         $userId = $this->userModel->create($data);
         

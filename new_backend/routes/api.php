@@ -36,6 +36,7 @@ $router->get('/trainers/{id}', [TrainerController::class, 'findById']);
 // Class Routes
 $router->get('/classes', [ClassController::class, 'index']);
 $router->get('/classes/{id}', [ClassController::class, 'show']);
+$router->post('/classes', [ClassController::class, 'create']);
 
 // Attendance Routes
 $router->get('/attendance/{date}', [AttendanceController::class, 'getByDate']);

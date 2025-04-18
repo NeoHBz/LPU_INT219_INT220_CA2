@@ -26,6 +26,8 @@ CREATE TABLE
         price DECIMAL(10, 2) NOT NULL,
         duration VARCHAR(50) NOT NULL,
         membership_type ENUM ('basic', 'standard', 'premium', 'professional') NOT NULL,
+        description TEXT DEFAULT NULL,
+        features JSON DEFAULT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     );

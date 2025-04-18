@@ -18,6 +18,53 @@ class ClassModel {
         return $classes ? $classes[0] : null;
     }
     
+    public function create($data) {
+        try {
+            $this->db->beginTransaction();
+            
+            // Insert into classes table
+            $sql = "INSERT INTO classes (class_name, class_type_id, trainer_id, max_capacity, description) 
+                    VALUES (?, ?, ?, ?, ?)";
+            
+            $params = [
+                $data['class_name'],
+                $data['class_type_id'],
+                $data['trainer_id'],
+                $data['max_capacity'],
+                $data['description']
+            ];
+            
+            $this->db->query($sql, $params);
+            $classId = $this->db->lastInsertId();
+            
+            // Insert schedule
+            $this->insertSchedule($classId, $data['schedule']);
+            
+            $this->db->commit();
+            return $classId;
+        } catch (\PDOException $e) {
+            $this->db->rollback();
+            error_log("Failed to create class: " . $e->getMessage());
+            return false;
+        }
+    }
+    
+    private function insertSchedule($classId, $scheduleData) {
+        $sql = "INSERT INTO class_schedule (class_id, day_of_week, start_time, end_time) 
+                VALUES (?, ?, ?, ?)";
+        
+        foreach ($scheduleData as $schedule) {
+            $params = [
+                $classId,
+                $schedule['day_of_week'],
+                $schedule['start_time'],
+                $schedule['end_time']
+            ];
+            
+            $this->db->query($sql, $params);
+        }
+    }
+    
     private function getClasses($filters = [], $singleRecord = false) {
         $sql = "SELECT c.id, c.class_name, c.max_capacity, c.description, ct.name as type, 
                 t.id as trainer_id, u.first_name, u.last_name, t.rating, t.reviews_count,
