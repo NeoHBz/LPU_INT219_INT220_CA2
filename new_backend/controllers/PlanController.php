@@ -15,24 +15,19 @@ class PlanController {
     public function getAll() {
         $plans = $this->planModel->findAll();
         
-        // Transform data to match the API documentation format
-        $transformedPlans = array_map(function($plan) {
-            return [
-                'planId' => $plan['id'],
-                'planName' => $plan['plan_name'],
-                'price' => (float) $plan['price'],
-                'duration' => $plan['duration'],
-                'membershipType' => $plan['membership_type'],
-                'description' => $plan['description'],
-                'features' => json_decode($plan['features'], true),
-                'createdAt' => $plan['created_at'],
-                'updatedAt' => $plan['updated_at']
-            ];
-        }, $plans);
+        foreach ($plans as &$plan) {
+            if (isset($plan['features'])) {
+                $plan['features'] = json_decode($plan['features'], true);
+            }
+            
+            if (isset($plan['price'])) {
+                $plan['price'] = (float) $plan['price'];
+            }
+        }
         
         return Response::json([
             'status' => 'success',
-            'data' => $transformedPlans
+            'data' => $plans
         ]);
     }
     
@@ -46,20 +41,17 @@ class PlanController {
             ], 404);
         }
         
-        // Transform to match API format
-        $transformedPlan = [
-            'planId' => $plan['id'],
-            'planName' => $plan['plan_name'],
-            'price' => (float) $plan['price'],
-            'duration' => $plan['duration'],
-            'membershipType' => $plan['membership_type'],
-            'createdAt' => $plan['created_at'],
-            'updatedAt' => $plan['updated_at']
-        ];
+        if (isset($plan['features'])) {
+            $plan['features'] = json_decode($plan['features'], true);
+        }
+        
+        if (isset($plan['price'])) {
+            $plan['price'] = (float) $plan['price'];
+        }
         
         return Response::json([
             'status' => 'success',
-            'data' => $transformedPlan
+            'data' => $plan
         ]);
     }
 }
