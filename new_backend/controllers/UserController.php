@@ -14,16 +14,26 @@ class UserController {
     }
     
     private function validateAndSanitizeInput($data) {
-        // Validate and sanitize input data
-        $data['username'] = filter_var($data['username'], FILTER_SANITIZE_STRING);
-        $data['email'] = filter_var($data['email'], FILTER_SANITIZE_EMAIL);
-        $data['password'] = password_hash($data['password'], PASSWORD_BCRYPT);
-        $data['first_name'] = filter_var($data['first_name'], FILTER_SANITIZE_STRING);
-        $data['last_name'] = filter_var($data['last_name'], FILTER_SANITIZE_STRING);
+        $sanitized = [];
         
-        return $data;
-    }
+        if (isset($data['username'])) {
+            $sanitized['username'] = htmlspecialchars($data['username'], ENT_QUOTES, 'UTF-8');
+        }
+        
+        if (isset($data['email'])) {
+            $sanitized['email'] = filter_var($data['email'], FILTER_SANITIZE_EMAIL);
+        }
 
+        if (isset($data['first_name'])) {
+            $sanitized['first_name'] = htmlspecialchars($data['first_name'], ENT_QUOTES, 'UTF-8');
+        }
+        
+        if (isset($data['last_name'])) {
+            $sanitized['last_name'] = htmlspecialchars($data['last_name'], ENT_QUOTES, 'UTF-8');
+        }
+        
+        return array_merge($data, $sanitized);
+    }
     public function login() {
         // Get POST data
         $data = json_decode(file_get_contents('php://input'), true);
