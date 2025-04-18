@@ -46,9 +46,9 @@ export default function ProfilePage() {
                           <div className="text-center">
                               {/* @ts-ignore */}
                               <h3 className="text-xl font-bold">{userInformation.first_name}  {userInformation.last_name}</h3>
-                              <p className="text-sm text-muted-foreground">Member since January 2023  <strong>change it </strong></p>
+                              <p className="text-sm text-muted-foreground">Member since January 2023  </p>
                 <div className="mt-2 flex justify-center">
-                                  <Badge className="mr-1">Premium Member <strong>change it </strong></Badge>
+                                  <Badge className="mr-1">Premium Member </Badge>
                                   <Badge variant="outline">ID: {userInformation.id}</Badge>
                 </div>
               </div>

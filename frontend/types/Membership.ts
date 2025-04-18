@@ -1,8 +1,8 @@
 export interface MembershipPlansType{
     id: string;
-    name: string;
+    membershipType: string;
     price: number;
-    interval: string;
+    duration: string;
     description: string;
     features: string[];
     popular: boolean;

@@ -108,7 +108,7 @@ export default function DashboardPage() {
                 <CreditCard className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">${revenue}</div>
+                              <div className="text-2xl font-bold">₹{revenue}</div>
                 <p className="text-xs text-muted-foreground">
                   +18.2% from last month
                 </p>

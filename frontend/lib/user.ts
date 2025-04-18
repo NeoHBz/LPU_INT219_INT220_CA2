@@ -94,10 +94,13 @@ export const userApi = createApi({
         }),
         membershipPlans: builder.query({
             query: () => ({
-                url: "/membershipPlans",
+                url: "/plans",
                 method: "GET",
             }),
-            providesTags: ["classes"]
+            providesTags: ["classes"],
+            transformResponse: (response: any) => {
+                return response.data;
+            }
         }),
         membershipSubscribers: builder.query({
             query: () => ({
