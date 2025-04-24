@@ -22,7 +22,6 @@ class ClassModel {
         try {
             $this->db->beginTransaction();
             
-            // Insert into classes table
             $sql = "INSERT INTO classes (class_name, class_type_id, trainer_id, max_capacity, description) 
                     VALUES (?, ?, ?, ?, ?)";
             
@@ -37,7 +36,6 @@ class ClassModel {
             $this->db->query($sql, $params);
             $classId = $this->db->lastInsertId();
             
-            // Insert schedule
             $this->insertSchedule($classId, $data['schedule']);
             
             $this->db->commit();

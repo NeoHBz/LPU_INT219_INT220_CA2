@@ -35,10 +35,8 @@ class UserController {
         return array_merge($data, $sanitized);
     }
     public function login() {
-        // Get POST data
         $data = json_decode(file_get_contents('php://input'), true);
         
-        // Validate required fields
         if (empty($data['email']) || empty($data['password'])) {
             return Response::json([
                 'status' => 'error',
@@ -46,9 +44,7 @@ class UserController {
             ], 400);
         }
 
-        // Sanitize input data
         $data = $this->validateAndSanitizeInput($data);
-        // Validate email format
         if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
             return Response::json([
                 'status' => 'error',
@@ -56,7 +52,6 @@ class UserController {
             ], 400);
         }
 
-        // Find user by email
         $user = $this->userModel->findByEmail($data['email']);
         
         if (!$user) {
@@ -66,7 +61,6 @@ class UserController {
             ], 401);
         }
         
-        // Verify password
         if (!password_verify($data['password'], $user['password'])) {
             return Response::json([
                 'status' => 'error',
@@ -74,10 +68,8 @@ class UserController {
             ], 401);
         }
         
-        // Remove password from user data
         unset($user['password']);
         
-        // Generate JWT token
         $token = JWT::encode([
             'id' => $user['id'],
             'email' => $user['email']
@@ -94,10 +86,8 @@ class UserController {
     }
     
     public function register() {
-        // Get POST data
         $data = json_decode(file_get_contents('php://input'), true);
         
-        // Validate required fields
         if (empty($data['username']) || empty($data['email']) || empty($data['password']) || empty($data['first_name']) || empty($data['last_name'])) {
             return Response::json([
                 'status' => 'error',
@@ -105,7 +95,6 @@ class UserController {
             ], 400);
         }
         
-        // Check if email already exists
         $existingUser = $this->userModel->findByEmail($data['email']);
         if ($existingUser) {
             return Response::json([
@@ -114,16 +103,13 @@ class UserController {
             ], 409);
         }
         
-        // Sanitize input data
         $data = $this->validateAndSanitizeInput($data);
-        // Validate email format
         if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
             return Response::json([
                 'status' => 'error',
                 'message' => 'Invalid email format'
             ], 400);
         }
-        // Create user
         $userId = $this->userModel->create($data);
         
         if (!$userId) {
@@ -133,10 +119,8 @@ class UserController {
             ], 500);
         }
         
-        // Get the created user without password
         $user = $this->userModel->findById($userId);
         
-        // Generate JWT token
         $token = JWT::encode([
             'id' => $userId,
             'email' => $data['email']
@@ -153,7 +137,6 @@ class UserController {
     }
     
     public function me(): array {
-        // Get user ID from request
         $userId = $_REQUEST['user']['id'] ?? null;
         
         if (!$userId) {
@@ -163,7 +146,6 @@ class UserController {
             ], 404);
         }
         
-        // Find user by ID
         $user = $this->userModel->findById($userId);
         
         if (!$user) {
@@ -173,7 +155,6 @@ class UserController {
             ], 404);
         }
         
-        // Remove password from user data
         unset($user['password']);
         
         return Response::json([

@@ -9,7 +9,6 @@ class Database
 
     private function __construct()
     {
-        // Simplified database connection
         $host = $_ENV['DB_HOST'] ?? 'localhost';
         $database = $_ENV['DB_DATABASE'] ?? 'fitness';
         $username = $_ENV['DB_USERNAME'] ?? 'root';

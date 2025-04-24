@@ -16,7 +16,6 @@ class Router {
     ];
     private $currentRoute = null;
     
-    // Unified method for registering routes
     private function addRoute($method, $route, $controller) {
         $this->routes[$method][$route] = $controller;
         $this->currentRoute = ['method' => $method, 'route' => $route];
@@ -142,7 +141,7 @@ class Router {
         }
         
         if (!$this->handleMiddlewares($method, $routePath)) {
-            return; // Middleware handled the response
+            return;
         }
         
         $response = null;
