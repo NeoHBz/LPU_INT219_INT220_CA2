@@ -33,7 +33,7 @@ export function MainNav() {
         { href: "/classes", label: "Classes" },
         { href: "/trainers", label: "Trainers" },
         { href: "/equipment", label: "Equipment" },
-        { href: "/attendance", label: "Attendance", adminOnly: true },
+        // { href: "/attendance", label: "Attendance", adminOnly: true },
         { href: "/memberships", label: "Memberships", adminOnly: true },
     ];
 

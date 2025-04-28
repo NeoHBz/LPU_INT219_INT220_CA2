@@ -70,10 +70,10 @@ export function MembershipPlans() {
                             <div className="text-sm text-muted-foreground">{Math.floor(Math.random() * 100)} active members</div>
                             <div className="flex w-full justify-between">
                                 <Button asChild variant="outline">
-                                    <Link href={`/memberships/${plan.id}/edit`}>
+                                {/* <Link href={`/memberships/${plan.id}/edit`}>
                                         <Edit className="mr-2 h-4 w-4" />
                                         Edit
-                                    </Link>
+                                    </Link> */}
                                 </Button>
                                 <DropdownMenu>
                                     <DropdownMenuTrigger asChild>
