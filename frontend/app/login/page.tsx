@@ -80,7 +80,6 @@ export default function LoginPage() {
     const [formData, setFormData] = useState({
         email: "saurav@fit.com",
         password: "sekurepass",
-        remember: false
     });
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -89,16 +88,19 @@ export default function LoginPage() {
         signIn(formData);
     };
     useEffect(() => {
-        if (data && !error) {
+        if (data && !error && data.status !=="error") {
             const token = data.data.token;
             if (token) {
                 localStorage.setItem("token", token);
                 dispatch(setUserInformation(data.data.user));
-                router.push("/dashboard");
+                router.push("/");
             }
             else {
                 console.log("didn't get token");
             }
+        }
+        else if(data?.status === "error") {
+            alert("Invalid credentials");
         }
 
     }, [data, isLoading, error])
@@ -146,7 +148,7 @@ export default function LoginPage() {
                                 onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
                             />
                         </div>
-                        <div className="flex items-center space-x-2 pt-1">
+                        {/* <div className="flex items-center space-x-2 pt-1">
                             <Checkbox
                                 id="remember"
                                 checked={formData.remember}
@@ -155,7 +157,7 @@ export default function LoginPage() {
                             <Label htmlFor="remember" className="text-sm font-normal">
                                 Remember me
                             </Label>
-                        </div>
+                        </div> */}
 
                         {error && <p className="text-red-500 text-sm">Invalid credentials</p>}
 

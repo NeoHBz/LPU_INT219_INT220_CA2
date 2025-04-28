@@ -27,8 +27,12 @@ export default function RegisterPage() {
         e.preventDefault();
         signUp(formData);
     };
-
     useEffect(() => {
+        console.log(formData);
+    }, [formData])
+    
+    useEffect(() => {
+        console.log(data, isLoading, error)
         if (data && !error) {
             router.push("/classes");
             // dispatch user information

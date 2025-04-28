@@ -2,20 +2,28 @@
 
 import * as React from "react"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import { Dumbbell, Menu, X } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { useSelector } from "react-redux"
-import { selectIsUserAdmin, selectOnlyLogin } from "@/lib/userSlice"
+import { useDispatch, useSelector } from "react-redux"
+import { logoutUser, selectIsUserAdmin, selectOnlyLogin, setUserInformation } from "@/lib/userSlice"
 
 export function MainNav() {
     const [open, setOpen] = React.useState(false)
     const isAdmin = useSelector(selectIsUserAdmin);
     const pathname = usePathname()
     const isLogin = useSelector(selectOnlyLogin);
+    const dispatch = useDispatch();
+    const router = useRouter();
+
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        dispatch(logoutUser());
+        router.push("/login");
+    }
 
     const allRoutes = [
         { href: "/", label: "Home" },
@@ -24,7 +32,7 @@ export function MainNav() {
         { href: "/members", label: "Members", adminOnly: true },
         { href: "/classes", label: "Classes" },
         { href: "/trainers", label: "Trainers" },
-        { href: "/equipment", label: "Equipment", adminOnly: true },
+        { href: "/equipment", label: "Equipment" },
         { href: "/attendance", label: "Attendance", adminOnly: true },
         { href: "/memberships", label: "Memberships", adminOnly: true },
     ];
@@ -61,7 +69,7 @@ export function MainNav() {
                     ))}
                     {!isLogin ? (<Button asChild>
                         <Link href="/login">Login</Link>
-                    </Button>) : <Button>Logout</Button>}
+                    </Button>) : <Button variant="outline" onClick={handleLogout}>Logout</Button>}
                 </nav>
                 <Sheet open={open} onOpenChange={setOpen}>
                     <SheetTrigger asChild className="md:hidden ml-auto">
@@ -107,7 +115,7 @@ export function MainNav() {
                                 <Link href="/login" onClick={() => setOpen(false)}>
                                     Login
                                 </Link>
-                            </Button>) : (<Button>Logout</Button>)}
+                            </Button>) : (<Button  onClick={handleLogout}>Logout</Button>)}
                         </nav>
                     </SheetContent>
                 </Sheet>

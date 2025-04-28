@@ -16,15 +16,18 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { EquipmentTable } from "@/components/equipment/equipment-table"
 import { MaintenanceTable } from "@/components/equipment/maintenance-table"
+import { selectIsUserAdmin } from "@/lib/userSlice"
+import { useSelector } from "react-redux"
 
 export default function EquipmentPage() {
-  const [filterStatus, setFilterStatus] = useState<string[]>(["operational"])
+    const [filterStatus, setFilterStatus] = useState<string[]>(["operational"])
+    const isAdmin = useSelector(selectIsUserAdmin);
 
   return (
     <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
       <div className="flex items-center justify-between space-y-2">
         <h2 className="text-3xl font-bold tracking-tight">Equipment</h2>
-        <div className="flex items-center space-x-2">
+        {isAdmin?<div className="flex items-center space-x-2">
           <Link
             href="/equipment/new"
             className="inline-flex h-9 items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow hover:bg-primary/90"
@@ -32,7 +35,7 @@ export default function EquipmentPage() {
             <Plus className="mr-2 h-4 w-4" />
             Add Equipment
           </Link>
-        </div>
+        </div>:null}
       </div>
       <Tabs defaultValue="inventory" className="space-y-4">
         <TabsList>

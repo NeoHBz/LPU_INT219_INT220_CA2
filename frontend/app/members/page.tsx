@@ -25,7 +25,7 @@ export default function MembersPage() {
     <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
       <div className="flex items-center justify-between space-y-2">
         <h2 className="text-3xl font-bold tracking-tight">Members</h2>
-        <div className="flex items-center space-x-2">
+        {/* <div className="flex items-center space-x-2">
           <Link
             href="/members/new"
             className="inline-flex h-9 items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow hover:bg-primary/90"
@@ -33,7 +33,7 @@ export default function MembersPage() {
             <UserPlus className="mr-2 h-4 w-4" />
             Add Member
           </Link>
-        </div>
+        </div> */}
       </div>
       <Card>
         <CardHeader>

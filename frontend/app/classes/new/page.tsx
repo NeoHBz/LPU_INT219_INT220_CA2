@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
@@ -19,6 +19,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Checkbox } from "@/components/ui/checkbox"
 import { MainNav } from "@/components/main-nav"
 import { cn } from "@/lib/utils"
+import { useAddClassMutation } from "@/lib/user"
 // Add import for useToast
 
 
@@ -104,30 +105,38 @@ export default function NewClassPage() {
         },
     })
 
+    const [addClass, { data: addClassResponse, error, isLoading,isSuccess }]  = useAddClassMutation();
+    
+    
     // Update onSubmit function to use toast notifications
     function onSubmit(data: ClassFormValues) {
-        console.log(data)
-        // Format the data for the API
+        console.log( data);
         const formattedData = {
-            name: data.name,
+            class_name: data.name,
             type: data.type,
             trainer: data.trainer,
+            trainer_id: trainers.find(trainer => trainer.name === data.trainer)?.id || Math.floor(Math.random() * 10),
             location: data.location,
             capacity: data.capacity,
             description: data.description || "",
             days: data.days,
             time: `${data.startTime} - ${data.endTime}`,
             startDate: format(data.startDate, "yyyy-MM-dd"),
-            schedule: data.days
-                .map((day) => {
-                    const dayName = daysOfWeek.find((d) => d.id === day)?.name || ""
-                    return dayName
-                })
-                .join(", "),
+            max_capacity: 30,
+            // Each schedule item must contain day_of_week, start_time, and end_time
+            schedule: data.days.map((day) => {
+                const dayName = daysOfWeek.find((d) => d.id === day)?.name || ""
+                return {
+                    day_of_week: dayName,
+                    start_time: data.startTime,
+                    end_time: data.endTime,
+                }
+            })
+                
         }
-
-        // Send the data to the API
-        fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/classes/add`, {
+        
+        // addClass(formattedData);
+        fetch(`http://localhost:5000/classes`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -141,18 +150,40 @@ export default function NewClassPage() {
                 return response.json()
             })
             .then(() => {
-                // Show success toast
-                
-                // On success, redirect to the classes page
                 router.push("/classes")
             })
             .catch((error) => {
                 console.error("Error adding class:", error)
-                // Show error toast
-                
             })
     }
 
+    const trainersList = async () => {
+        const response = await fetch(`http://localhost:5000/trainers`)
+        const data = await response.json();
+        
+        setTrainers(data);
+    }
+    useEffect(() => {
+        trainersList();
+    }, [])
+
+    useEffect(() => {
+      
+    }, [trainers])
+    
+
+    useEffect(() => {
+        console.log(addClassResponse, error, isLoading, isSuccess);
+        if (isSuccess && addClassResponse?.status === "success") {
+            // Show success toast
+            console.log("Class added successfully");
+            router.push("/classes")
+        } else if (error) {
+            // Show error toast
+            console.error("Error adding class:", error);
+        }
+    }, [addClassResponse, error, isLoading])
+    
     return (
         <>
             {/* <MainNav /> */}

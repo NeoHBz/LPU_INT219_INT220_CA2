@@ -29,32 +29,46 @@ export function ClassesTable() {
     const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc")
     const isAdmin = useSelector(selectIsUserAdmin);
     const [getClasses, { data: classesOfUser, isError, error, isLoading }] = useLazyAllClassesQuery();
+
+
+    const fetchClasses = async () => {
+        await fetch(`http://localhost:5000/classes`, {
+            method: "GET"
+        }).then((res) => res.json()).then((data) =>{
+            
+            //convert days:[1,2,3] to days:["Mon","Tue","Wed"]
+            
+            const transformedResponse = data.map((item: any) => {
+                const schedule = item.days.map((day: number) => {
+                    const daysOfWeek = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+                    return daysOfWeek[day - 1];
+                }
+                );
+                return { ...item, schedule: schedule.join(", ") };
+            });
+            
+            setClasses(transformedResponse)});
+    }
     useEffect(() => {
-        if (isAdmin) {
-            getClasses("");
-        }
-    }, [isAdmin])
+        fetchClasses();
+
+    }, [])
     useEffect(() => {
 
         if (classesOfUser) {
-            // console.log(classesOfUser);
-            // const transformedResponse = classesOfUser.data.schedule.map((item: any) => {
-            //     const schedule = item.schedule.map((scheduleItem: any) => {
-            //         return scheduleItem.day_of_week.toLowerCase().substring(0, 3);
-            //     });
-            //     return { ...item, schedule: schedule.join(", ") };
-            // });
-            // console.log(transformedResponse);
+            
             const transformedResponse = classesOfUser.data.map((item: any) => {
                 const schedule = item.schedule.map((scheduleItem: any) => {
                     return scheduleItem.day_of_week.toLowerCase().substring(0, 3);
                 });
                 return { ...item, schedule: schedule.join(", "), time: item.schedule[0].start_time };
             });
+            
             setClasses(transformedResponse);
         }
     }, [classesOfUser, isError, isLoading])
-
+    
+    
 
 
     const toggleSort = (column: string) => {
@@ -73,9 +87,10 @@ export function ClassesTable() {
         if (typeof aValue === "string" && typeof bValue === "string") {
             return sortDirection === "asc" ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue)
         }
-
         return 0
     })
+
+    
 
     const toggleSelectAll = () => {
         if (selectedClasses.length === classes.length) {
@@ -150,7 +165,7 @@ export function ClassesTable() {
                                     aria-label={`Select ${classItem.class_name}`}
                                 />
                             </TableCell>
-                            <TableCell className="font-medium">{classItem.id}</TableCell>
+                            <TableCell className="font-medium">{classItem.id.substring(5,8)}</TableCell>
                             <TableCell>
                                 <div className="font-medium">{classItem.class_name}</div>
                                 <div className="text-sm text-muted-foreground md:hidden">{classItem.type}</div>

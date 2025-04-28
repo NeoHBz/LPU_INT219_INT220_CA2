@@ -51,21 +51,22 @@ const fitnessCenterData = createSlice({
         ) => {
             state.userInfo = action.payload;
         },
-
+        logoutUser: (state: StateInterface) => {
+            state.userInfo = { ...initialState.userInfo };
+        },
     },
 });
 
-export const { setUserInformation } = fitnessCenterData.actions;
+export const { setUserInformation, logoutUser } = fitnessCenterData.actions;
 export default fitnessCenterData.reducer;
 
 export const selectUserInformation = (state: { userInformation: StateInterface }) => state.userInformation.userInfo;
 export const selectIsUserAdmin = createSelector(
     selectUserInformation,
     (userInfo) => userInfo.isAdmin
-
 )
+
 export const selectOnlyLogin = createSelector(
     selectUserInformation,
-
     (userInfo) => userInfo.email !== ""
 )

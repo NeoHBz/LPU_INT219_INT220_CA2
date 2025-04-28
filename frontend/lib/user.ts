@@ -26,7 +26,7 @@ export const userApi = createApi({
     endpoints: (builder) => ({
         signUp: builder.mutation({
             query: (Credentials) => ({
-                url: "/auth/signUp",
+                url: "/user/register",
                 method: "POST",
                 body: { ...Credentials },
             }),
@@ -115,6 +115,14 @@ export const userApi = createApi({
                 method: "GET",
             }),
         }),
+        addClass: builder.mutation({
+            query: (classData) => ({
+                url: "/classes",
+                method: "POST",
+                body: { ...classData },
+            }),
+            invalidatesTags: ["classes"],
+        }),
     }),
 });
 
@@ -130,5 +138,6 @@ export const {
     useMembershipPlansQuery, 
     useMembershipSubscribersQuery,
     useLogInMutation,
-    useDashboardQuery
+    useDashboardQuery,
+    useAddClassMutation
 } = userApi;

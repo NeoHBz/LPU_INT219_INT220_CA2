@@ -82,7 +82,7 @@ export default function NewEquipmentPage() {
     })
 
     function onSubmit(data: EquipmentFormValues) {
-        console.log(data)
+        
         // Format the data for the API
         const formattedData = {
             name: data.name,

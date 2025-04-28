@@ -8,8 +8,8 @@ import { useWhoAmiQuery } from "@/lib/user"
 import { useEffect } from "react"
 import Loading from "@/app/loading"
 import { MainNav } from "@/components/main-nav"
-import { useDispatch } from "react-redux"
-import { setUserInformation } from "@/lib/userSlice"
+import { useDispatch, useSelector } from "react-redux"
+import { selectIsUserAdmin, setUserInformation } from "@/lib/userSlice"
 
 export default function Home() {
     // const { data, error, isLoading } = useWhoAmiQuery("");
@@ -21,6 +21,7 @@ export default function Home() {
     //     }
 
     // }, [data])
+    const isAdmin = useSelector(selectIsUserAdmin);
     // if (isLoading) return <Loading />;
 
     return (
@@ -46,10 +47,13 @@ export default function Home() {
                                     size="lg"
                                     className="bg-white text-blue-600 hover:bg-gray-100"
                                 >
-                                    <Link href="/dashboard">
+                                    {isAdmin?<Link href="/dashboard">
                                         Get Started
                                         <ArrowRight className="ml-2 h-4 w-4" />
-                                    </Link>
+                                    </Link> : <Link href="/profile">
+                                        Get Started
+                                        <ArrowRight className="ml-2 h-4 w-4" />
+                                    </Link>}
                                 </Button>
                                 <Button
                                     asChild

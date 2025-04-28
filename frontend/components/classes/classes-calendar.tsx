@@ -31,17 +31,19 @@ export function ClassesCalendar() {
         { bg: "bg-pink-100", border: "border-pink-300", text: "text-pink-700" },
         { bg: "bg-teal-100", border: "border-teal-300", text: "text-teal-700" },
     ];
-    // React.useEffect(() => {
-    //     if (isAdmin) {
-    //         getClasses("");
-    //     }
-    // }, [isAdmin])
+
     useEffect(() => {
         const fetchClasses = async () => {
-            const response = await fetch(`http://localhost:9876/api/allClasses`);
-            const data = await response.json();
-            console.log("Here is the adata assholes", data)
-            setClassSchedule(data);
+            await fetch(`http://localhost:5000/classes`, {
+                method: "GET"
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    setClassSchedule(data);
+                });
+
+            
+            // setClassSchedule(data);
         };
         fetchClasses();
 
@@ -67,6 +69,10 @@ export function ClassesCalendar() {
         const adjustedDayIndex = dayIndex === 0 ? 7 : dayIndex
         return classSchedule?.filter((cls) => cls.days.includes(adjustedDayIndex))
     }
+    useEffect(() => {
+        console.log("classSchedule", classSchedule);
+    }, [classSchedule])
+    
 
     return (
         <div className="space-y-4">
