@@ -3,15 +3,6 @@
 namespace App\Models;
 
 use App\Database\Database;
-// - **GET `/members`**  
-//   Fetch a list of all members with filters (e.g., active, inactive, expired).
-
-// - **GET `/members/:id`**  
-//   Fetch details of a specific member.
-
-// - **POST `/members`**  
-//   Add a new member.
-
 class Member {
     private $db;
     
@@ -50,7 +41,6 @@ class Member {
         $stmt = $this->db->query($sql);
         $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
-        // Decode JSON fields
         foreach ($rows as &$row) {
             // $row['user'] = json_decode($row['user'], true);
             $row['plan'] = json_decode($row['plan'], true);

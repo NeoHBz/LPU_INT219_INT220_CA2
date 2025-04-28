@@ -1,6 +1,6 @@
 # API Routes Documentation
 
-This document outlines the potential API routes for the FitTrack - Fitness Center Management System. These routes can be integrated to replace the current hardcoded data in the project.
+This document outlines the potential API routes for the FitTrack - Fitness Center Management System.
 
 ---
 
@@ -38,12 +38,12 @@ User: {
 - **GET `/members/:id`**  
   Fetch details of a specific member.
 
-- **POST `/members`**  
-  Add a new member.
+<!-- - **POST `/members`**  
+  Add a new member. -->
 
 {
     user: User;
-    membershipType: 'basic' | 'standard' | 'premium';
+    membership_id: string;
     expiryDate: datetime;
 }
 
@@ -62,17 +62,13 @@ User: {
 - **GET `/plans`**  
   Fetch all membership plans.
 {
-    "1 month": "1000",
-    "3 month": "2500",
-    "6 month": "4000",
-    "12 month": "6500"
-}
-
-- **GET `/memberships/:id`**  
-  Fetch details of a specific membership plan.
-{
-    "current": "1 month",
-    "lastRenewed": "10-02-2024" new Date()
+    "planId": string,
+    "planName": string,
+    "price": double,
+    "duration": string,
+    "membershipType": "basic" | "standard" | "premium" | "professional",
+    "createdAt": datetime,
+    "updatedAt": datetime
 }
 
 ---
@@ -81,7 +77,7 @@ User: {
 
 ### Routes
 - **GET `/classes`**  
-  Fetch all classes with filters (e.g., upcoming, popular).
+  Fetch all classes with filters
 {
     id: string;
     className: string;
@@ -91,14 +87,7 @@ User: {
         name: string;
         ...
     }
-    schedule: [
-        {
-            "Day": {
-                "start": time
-                "end": time
-            }
-        }
-    ]
+    schedule: []
     capacity: integer
     enrolled: integer
 }
@@ -153,11 +142,11 @@ User: {
 - **POST `/attendance`**  
   Add a new attendance record.
 
-- **PUT `/attendance/:id`**  
+<!-- - **PUT `/attendance/:id`**  
   Update an attendance record.
 
 - **DELETE `/attendance/:id`**  
-  Delete an attendance record.
+  Delete an attendance record. -->
 
 ---
 
@@ -170,14 +159,14 @@ User: {
 - **GET `/equipment/:id`**  
   Fetch details of a specific equipment item.
 
-- **POST `/equipment`**  
+<!-- - **POST `/equipment`**  
   Add a new equipment item.
 
 - **PUT `/equipment/:id`**  
   Update an existing equipment item.
 
 - **DELETE `/equipment/:id`**  
-  Remove an equipment item.
+  Remove an equipment item. -->
 
 - **GET `/equipment/maintenance`**  
   Fetch maintenance schedules.
@@ -231,16 +220,6 @@ User: {
   Delete a notification.
 
 ---
-
-## Integration Steps
-
-1. Replace hardcoded data in components with API calls using `fetch` or a library like `axios`.
-2. Use React Query or SWR for data fetching and caching.
-3. Implement error handling and loading states for API calls.
-4. Secure API routes with authentication and authorization middleware.
-
----
-
 ## Notes
 
 - These routes are suggestions based on the current project structure and features.

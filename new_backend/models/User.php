@@ -43,7 +43,6 @@ class User {
             }
         }
         
-        // Handle password separately if provided
         if (!empty($data['password'])) {
             $fields[] = "password = ?";
             $params[] = password_hash($data['password'], PASSWORD_BCRYPT);
@@ -55,7 +54,6 @@ class User {
         
         $fields[] = "updated_at = NOW()";
         
-        // Add ID for the WHERE clause
         $params[] = $id;
         
         $sql = "UPDATE users SET " . implode(', ', $fields) . " WHERE id = ?";

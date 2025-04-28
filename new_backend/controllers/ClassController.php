@@ -10,7 +10,6 @@ class ClassController {
         $this->classModel = new ClassModel();
     }
     
-    // GET /classes
     public function index() {
         $filters = $this->getFiltersFromRequest();
         $classes = $this->classModel->getAll($filters);
@@ -21,7 +20,6 @@ class ClassController {
         ]);
     }
     
-    // GET /classes/{id}
     public function show($id) {
         $class = $this->classModel->getById($id);
         
@@ -38,9 +36,7 @@ class ClassController {
         ]);
     }
     
-    // POST /classes
     public function create() {
-        // Validate request method
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             return Response::json([
                 'status' => 'error',
@@ -48,11 +44,9 @@ class ClassController {
             ], 405);
         }
 
-        // Get request body
         $requestBody = file_get_contents('php://input');
         $data = json_decode($requestBody, true);
 
-        // Validate required fields
         $requiredFields = ['class_name', 'class_type_id', 'trainer_id', 'max_capacity', 'description', 'schedule'];
         
         foreach ($requiredFields as $field) {
@@ -81,7 +75,6 @@ class ClassController {
             }
         }
 
-        // Create class
         $classId = $this->classModel->create($data);
         
         if (!$classId) {
@@ -91,7 +84,6 @@ class ClassController {
             ], 500);
         }
 
-        // Return newly created class
         $class = $this->classModel->getById($classId);
         
         return Response::json([
@@ -101,7 +93,6 @@ class ClassController {
         ], 201);
     }
     
-    // Extract filters from request
     private function getFiltersFromRequest() {
         $filters = [];
         
